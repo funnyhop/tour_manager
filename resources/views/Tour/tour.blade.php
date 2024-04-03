@@ -2,6 +2,14 @@
 @section('title')
     <title>Dashboard - Tour du lịch</title>
 @endsection
+@section('style')
+    <style>
+        .image-crop img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+@endsection
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
@@ -31,9 +39,9 @@
                 <div class="row">
                     <div class="col-sm-9">
                         <div class="form-group">
-                            <label class="control-label" for="order_id">Tên chương trình</label>
+                            <label class="control-label" for="order_id">Tên tour du lịch</label>
                             <input type="text" id="order_id" name="order_id" value=""
-                                placeholder="Nhập mô tả chương trình" class="form-control">
+                                placeholder="Nhập tên tour du lịch" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-3">
@@ -84,6 +92,36 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label" for="order_id">Mô tả chi tiết</label>
+                            <input type="text" id="order_id" name="order_id" value=""
+                                placeholder="Nhập mô tả chi tiết" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-md-6">
+                            <div class="image-crop">
+                                <img id="previewImage" src="{{ asset('img/home/product-1.png') }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>
+                                Hãy chọn một ảnh mới.
+                            </h5>
+                            <div class="btn-group">
+                                <label title="Upload image file" for="inputImage" class="btn btn-primary">
+                                    <input type="file" accept="image/*" name="file" id="inputImage"
+                                        class="hide">
+                                    Tải ảnh mới
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-12 text-right">
                         <button type="submit" class="btn btn-primary">Thêm</button>
                     </div>
@@ -101,8 +139,9 @@
                             <thead>
                                 <tr>
                                     <th>Tour ID</th>
-                                    <th data-hide="phone">Tên chương trình</th>
+                                    <th data-hide="phone">Tên tour du lịch</th>
                                     <th data-hide="phone,tablet">Giá tiền (VND)</th>
+                                    <th data-hide="phone,tablet">Chi tiết</th>
                                     <th data-hide="phone">Ngày bắt đầu</th>
                                     <th data-hide="phone">Giờ bắt đầu</th>
                                     <th data-hide="phone">Ngày kết thúc</th>
@@ -123,36 +162,8 @@
                                         299000.00đ
                                     </td>
                                     <td>
-                                        03/04/2015
-                                    </td>
-                                    <td>
-                                        08:00:00
-                                    </td>
-                                    <td>
-                                        03/05/2015
-                                    </td>
-                                    <td>
-                                        20:00:00
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        3214
-                                    </td>
-                                    <td>
-                                        Du lịch 2 ngày 1 đêm
-                                    </td>
-                                    <td>
-                                        299000.00đ
-                                    </td>
+                                        Du lịch 2 ngày 1 đêm Du lịch 2 ngày 1 đêmDu lịch 2 ngày 1 đêmDu lịch 2 ngày 1 đêmDu
+                                        lịch 2 ngày 1 đêmDu lịch</td>
                                     <td>
                                         03/04/2015
                                     </td>

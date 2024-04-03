@@ -19,6 +19,7 @@
 
     <!-- Data picker -->
     <link href="{{ asset('css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
+    @yield('style')
 </head>
 
 <body>
@@ -78,6 +79,37 @@
             <script src="js/plugins/footable/footable.all.min.js"></script>
 
 
+            <script>
+                $(document).ready(function() {
+
+                    var $inputImage = $("#inputImage");
+                    var $previewImage = $("#previewImage");
+
+                    if (window.FileReader) {
+                        $inputImage.change(function() {
+                            var fileReader = new FileReader(),
+                                files = this.files,
+                                file;
+
+                            if (!files.length) {
+                                return;
+                            }
+
+                            file = files[0];
+
+                            if (/^image\/\w+$/.test(file.type)) {
+                                fileReader.readAsDataURL(file);
+                                fileReader.onload = function() {
+                                    // Hiển thị ảnh mới trong thẻ <img> preview
+                                    $previewImage.attr("src", this.result);
+                                };
+                            } else {
+                                alert("Vui lòng chọn một tập tin hình ảnh.");
+                            }
+                        });
+                    }
+                });
+            </script>
             <script>
                 $(document).ready(function() {
                     $('.chart').easyPieChart({
@@ -285,6 +317,7 @@
                     });
                 });
             </script>
+
 </body>
 
 </html>

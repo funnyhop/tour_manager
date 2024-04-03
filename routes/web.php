@@ -34,6 +34,9 @@ use App\Http\Controllers\Employee_PositionController;
 Route::middleware([])->group(function () {
     Route::get('accommodation', [AccommodationController::class, 'index'])->name('accommodation');
     Route::get('bill', [BillController::class, 'index'])->name('bill');
+    Route::get('bill_detail', [BillController::class, 'show'])->name('bill_detail');
+    Route::get('invoice', [BillController::class, 'invoice'])->name('invoice');
+    Route::get('invoice_print', [BillController::class, 'invoice_print'])->name('invoice_print');
     Route::get('customer', [CustomerController::class, 'index'])->name('customer');
     Route::get('eat', [EatController::class, 'index'])->name('eat');
     Route::get('employee_position', [Employee_PositionController::class, 'index'])->name('employee_position');
@@ -80,8 +83,8 @@ Route::get('/email', function () {
     return view('frontend.email');
 });
 
-Route::get('/checkout', function () {
-    return view('Order.checkout');
+Route::get('/bill_detail', function () {
+    return view('Order.bill_detail');
 });
 
 // Route::get('/income', function () {

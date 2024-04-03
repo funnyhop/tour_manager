@@ -11,15 +11,12 @@
                     <a href="{{ route('income') }}">Trang chủ</a>
                 </li>
                 <li>
-                    <a>Hóa đơn</a>
+                    <a>Đơn hàng</a>
                 </li>
                 <li class="active">
                     <a href="#"><strong>Hóa đơn</strong></a>
                 </li>
             </ol>
-        </div>
-        <div class="col-lg-2">
-
         </div>
     </div>
 
@@ -60,8 +57,8 @@
                                     </td>
                                     <td class="text-right">
                                         <div class="btn-group">
-                                            <a href="#" class=" btn-info btn btn-xs"><i
-                                                    class="fa fa-eye" aria-hidden="true"></i></a>
+                                            <a href="/bill_detail" class=" btn-info btn btn-xs"><i class="fa fa-eye"
+                                                    aria-hidden="true"></i></a>
                                             <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
                                                     aria-hidden="true"></i></a>
                                         </div>

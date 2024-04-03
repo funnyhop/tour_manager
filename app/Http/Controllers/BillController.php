@@ -13,7 +13,14 @@ class BillController extends Controller
     {
         return view('Order.bill');
     }
-
+    public function invoice()
+    {
+        return view('Order.invoice');
+    }
+    public function invoice_print()
+    {
+        return view('Order.invoice_print');
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -31,7 +38,7 @@ class BillController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource. show(string $id)
      */
     public function show(string $id)
     {

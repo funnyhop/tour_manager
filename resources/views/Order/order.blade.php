@@ -55,7 +55,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">Trạng thái</label>
-                        <input type="text" value="" placeholder="0(chưa thanh toán) / 1(đã thanh toán)" class="form-control">
+                        <input type="text" value="" placeholder="0(pending) / 1(paid) / 2(cancel)" class="form-control">
                     </div>
                 </div>
                 <div class="col-sm-3" hidden>
@@ -119,7 +119,7 @@
                                     </td>
                                     <td class="text-right">
                                         <div class="btn-group">
-                                            <a href="/checkout" class=" btn-info btn btn-xs"><i
+                                            <a href="{{ route('invoice') }}" class=" btn-info btn btn-xs"><i
                                                     class="fa fa-credit-card" aria-hidden="true"></i></a>
                                             <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
                                                     aria-hidden="true"></i></a>

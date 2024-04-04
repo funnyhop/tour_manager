@@ -1,16 +1,19 @@
 @extends('layouts.app')
 @section('title')
-    <title>Dashboard - Đối tượng</title>
+    <title>Dashboard - Chức vụ</title>
 @endsection
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Đối tượng</h2>
+            <h2>Chức vụ</h2>
             <ol class="breadcrumb">
                 <li>
                     <a href="{{ route('income') }}">Trang chủ</a>
                 </li>
-                <li><a href="{{ route('opject') }}">Đối tượng</a></li>
+                <li><a>Cơ cấu công ty</a></li>
+                <li>
+                    <a href="{{ route('office') }}">Chức vụ</a>
+                </li>
                 <li>
                     <a><strong>Chỉnh sửa</strong></a>
                 </li>
@@ -25,14 +28,15 @@
 
 
         <div class="ibox-content m-b-sm border-bottom">
-            <form action="{{ route('opject.update', ['id' => $opject->id]) }}" method="POST">
+            <form action="{{ route('office.update', ['id' => $office->id]) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <label class="control-label">Loại đối tượng</label>
-                            <input type="text" name="type" value="{{ $opject->type }}" placeholder="Khách hàng mới" class="form-control">
+                            <label class="control-label">Tên chức vụ</label>
+                            <input type="text" name="name" value="{{ $office->name }}"
+                                placeholder="Nhân viên / Trưởng phòng" class="form-control">
                         </div>
                     </div>
                 </div>

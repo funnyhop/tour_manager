@@ -25,13 +25,14 @@
 
 
         <div class="ibox-content m-b-sm border-bottom">
-            <form action="">
+            <form action="{{ route('office.store') }}" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <label class="control-label" for="order_id">Tên chức vụ</label>
-                            <input type="text" id="order_id" name="order_id" value=""
-                                placeholder="Nhân viên / Trưởng phòng" class="form-control">
+                            <label class="control-label">Tên chức vụ</label>
+                            <input type="text" name="name" placeholder="Nhân viên / Trưởng phòng"
+                                class="form-control">
                         </div>
                     </div>
                 </div>
@@ -58,38 +59,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        3214
-                                    </td>
-                                    <td>
-                                        Du lịch 2 ngày 1
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
+                                @foreach ($list as $item)
+                                    <tr>
+                                        <td>
+                                            {{ $item->id }}
+                                        </td>
+                                        <td>
+                                            {{ $item->name }}
+                                        </td>
+                                        <td class="d-action">
+                                            <a href="{{ route('office.edit', ['id' => $item->id]) }}"
+                                                class="btn-warning btn btn-xs"><i class="fa fa-pencil-square-o"
                                                     aria-hidden="true"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        3214
-                                    </td>
-                                    <td>
-                                        Du ngày 1 đêmDu lịch 2 ngày 1 đêm
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            <form action="{{ route('office.edit', ['id' => $item->id]) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn-danger btn btn-xs"><i class="fa fa-trash"
+                                                        aria-hidden="true"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>

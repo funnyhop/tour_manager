@@ -47,7 +47,7 @@ class UnitController extends Controller
             'fax' => $request->input('fax'),
             'thue' => $request->input('thue'),
         ]);
-        // \dd($unit);
+
         $unit->save();
         return redirect()->route('unit');
     }

@@ -8560,3 +8560,13 @@ body.md-skin {
     margin: 0;
   }
 }
+/* //////////////// */
+.d-action {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.d-action .btn {
+    margin-left: 5px;
+}
+

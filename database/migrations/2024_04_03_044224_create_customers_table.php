@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('gender');
             $table->date('birthday');
             $table->text('address');
-            $table->integer('phone');
+            $table->string('phone');
             $table->string('email')->unique();
             // $table->timestamp('email_verified_at')
             //     ->nullable()

@@ -16,42 +16,40 @@
                 </li>
             </ol>
         </div>
-        <div class="col-lg-2">
-
-        </div>
     </div>
 
     <div class="wrapper wrapper-content animated fadeInRight ecommerce">
 
 
         <div class="ibox-content m-b-sm border-bottom">
-            <form action="">
+            <form action="{{ route('unit.store') }}" method="post">
+                @csrf
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="control-label" >Tên đơn vị</label>
-                            <input type="text" value=""
+                            <input type="text" name="name"
                                 placeholder="Nhập tên đơn vị" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="control-label">Số điện thoại</label>
-                            <input type="text" value="" placeholder="0972 099 252"
+                            <input type="text" name="phone" placeholder="0972 099 252"
                                 class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="control-label">Số fax</label>
-                            <input type="text" value="" placeholder="3 723 249"
+                            <input type="text" name="fax" placeholder="3 723 249"
                                 class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="control-label">Số giấy chứng nhận đăng ký DN</label>
-                            <input type="text" value="" placeholder="0300588569"
+                            <input type="text" name="thue" placeholder="0300588569"
                                 class="form-control">
                         </div>
                     </div>
@@ -82,31 +80,37 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($list as $item)
                                 <tr>
                                     <td>
-                                        3214
+                                        {{ $item->id }}
                                     </td>
                                     <td>
-                                        Phòng marketing
+                                        {{ $item->name }}
                                     </td>
                                     <td>
-                                        0912345678
+                                        {{ $item->phone }}
                                     </td>
                                     <td>
-                                        3723249
+                                        {{ $item->fax }}
                                     </td>
                                     <td>
-                                        0300588569
+                                        {{ $item->thue }}
                                     </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i></a>
-                                        </div>
+                                    <td class="d-action">
+                                        <a href="{{ route('unit.edit', ['id' => $item->id]) }}" class="btn-warning btn btn-xs">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        </a>
+                                        <form action="{{ route('unit.destroy', ['id' => $item->id]) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-danger btn btn-xs">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>

@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Opject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OpjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $opject;
+    public function __construct(){
+        $this->opject = new Opject();
+    }
     public function index()
     {
-        return view('opject');
+        $list = $this->opject->opjects();
+        return view('opject', compact('list'));
     }
 
     /**
@@ -27,7 +34,16 @@ class OpjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'type' => 'required|string',
+        ]);
+
+        $opject = Opject::create([
+            'type' => $request->input('type'),
+        ]);
+
+        $opject->save();
+        return redirect()->route('opject');
     }
 
     /**
@@ -43,7 +59,8 @@ class OpjectController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $opject = DB::table('opjects')->select('id', 'type')->where('id', $id)->first();
+        return view('opject_edit') -> with(['opject'=>$opject]);
     }
 
     /**
@@ -51,7 +68,15 @@ class OpjectController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'type' => 'required|string',
+        ]);
+
+        $opject = DB::table('opjects')->where('id', $id)
+            ->update([
+                'type' => request()->input('type'),
+            ]);
+        return redirect()->route('opject');
     }
 
     /**
@@ -59,6 +84,8 @@ class OpjectController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $opject = DB::table('opjects')->where('id', $id);
+        $opject->delete();
+        return redirect()->route('opject');
     }
 }

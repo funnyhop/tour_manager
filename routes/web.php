@@ -42,7 +42,13 @@ Route::middleware([])->group(function () {
     Route::get('customer', [CustomerController::class, 'index'])->name('customer');
     Route::get('eat', [EatController::class, 'index'])->name('eat');
     Route::get('employee_position', [Employee_PositionController::class, 'index'])->name('employee_position');
+
     Route::get('employee', [EmployeeController::class, 'index'])->name('employee');
+    // Route::get('employee/create', [EmployeeController::class, 'create'])->name('employee.create');
+    Route::post('employee',[EmployeeController::class,'store'])->name('employee.store');
+    Route::get('employee/{id}', [EmployeeController::class, 'edit'])->name('employee.edit');
+    Route::match(['put','patch'],'employee/{id}', [EmployeeController::class, 'update'])->name('employee.update');
+    Route::delete('employee/{id}',[EmployeeController::class, 'destroy'])->name('employee.destroy');
 
     Route::get('hotel', [HotelController::class, 'index'])->name('hotel');
     // Route::get('hotel/create', [HotelController::class, 'create'])->name('hotel.create');

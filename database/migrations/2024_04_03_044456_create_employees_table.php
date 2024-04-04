@@ -23,10 +23,12 @@ return new class extends Migration
             //     ->nullable()
             //     ->default(null);
             $table->string('password');
+            $table->string('role')->default(2)->comment('1:Admin, 2:Employee');
             // $table->rememberToken();
 
             $table->unsignedBigInteger('unit_id');
             $table->foreign('unit_id')->references('id')->on('units');
+            $table->timestamps();
         });
     }
 

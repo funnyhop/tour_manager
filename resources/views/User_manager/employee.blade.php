@@ -27,20 +27,19 @@
 
 
         <div class="ibox-content m-b-sm border-bottom">
-            <form action="">
+            <form action="{{ route('employee.store') }}" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="control-label">Tên nhân viên</label>
-                            <input type="text" value=""
-                                placeholder="Nhập tên nhân viên" class="form-control">
+                            <input type="text" name="name" placeholder="Nhập tên nhân viên" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label class="control-label">Giới tính</label>
-                            <input type="text" value="" placeholder="Nam / Nữ"
-                                class="form-control">
+                            <input type="text" name="gender" placeholder="Nam / Nữ" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-3">
@@ -48,14 +47,15 @@
                             <label class="control-label" for="date_added">Ngày sinh</label>
                             <div class="input-group date">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_added"
-                                    type="text" class="form-control" placeholder="03/27/2024" value="03/27/2024">
+                                    type="text" name="birthday" class="form-control" placeholder="03/27/2024"
+                                    value="01/01/2024">
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="control-label">Địa chỉ</label>
-                            <input type="text" value="" placeholder="123 3/2 p.Hưng Lợi q.Ninh Kiều TP.CT"
+                            <input type="text" name="address" placeholder="123 3/2 p.Hưng Lợi q.Ninh Kiều TP.CT"
                                 class="form-control">
                         </div>
                     </div>
@@ -63,32 +63,40 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label class="control-label" for="status">Đơn vị</label>
-                            <select name="status" id="status" class="form-control">
+                            <label class="control-label" for="unit_id">Đơn vị</label>
+                            <select name="unit_id" id="unit_id" class="form-control">
                                 <option selected disabled>Chọn đơn vị</option>
-                                <option value="">Enabled</option>
+                                @foreach ($units as $unit)
+                                    <option value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="form-group">
                             <label class="control-label">Số điện thoại</label>
-                            <input type="text" value=""
-                                placeholder="Nhập tên nhân viên" class="form-control">
+                            <input type="text" name="phone" placeholder="0912345612" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label class="control-label">Email</label>
-                            <input type="text" value=""
-                                placeholder="Nhập tên nhân viên" class="form-control">
+                            <input type="text" name="email" placeholder="hop@gmail.com" class="form-control">
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="form-group">
                             <label class="control-label">Mật khẩu</label>
-                            <input type="text" value=""
-                                placeholder="12345678" class="form-control">
+                            <input type="password" name="password" placeholder="MyPassword123!" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="control-label">Phân quyền</label>
+                            <select name="role" class="form-control">
+                                <option value="2">Emloyee</option>
+                                <option value="1">Admin</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -116,49 +124,63 @@
                                     <th data-hide="phone">Đơn vị</th>
                                     <th data-hide="phone">Số điện thoại</th>
                                     <th data-hide="phone">Email</th>
+                                    <th data-hide="phone">Vai trò</th>
                                     <th data-hide="phone,tablet">Địa chỉ</th>
                                     <th class="text-right" data-sort-ignore="true">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        3214
-                                    </td>
-                                    <td>
-                                        Du lịch 2 ngày 1 đêm
-                                    </td>
-                                    <td>
-                                        Nam
-                                    </td>
-                                    <td>
-                                        03/04/2015
-                                    </td>
-                                    <td>
-                                        Phòng Marketing
-                                    </td>
-                                    <td>
-                                        0912847653
-                                    </td>
-                                    <td>
-                                        hop@gmail.com
-                                    </td>
-                                    <td>
-                                        123 3/2 p.Hưng Lợi q.Ninh Kiều TP.CT
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
+                                @foreach ($list as $item)
+                                    <tr>
+                                        <td>
+                                            {{ $item->id }}
+                                        </td>
+                                        <td>
+                                            {{ $item->name }}
+                                        </td>
+                                        <td>
+                                            {{ $item->gender }}
+                                        </td>
+                                        <td>
+                                            {{ $item->birthday }}
+                                        </td>
+                                        <td>
+                                            @foreach ($units as $unit)
+                                                @if ($unit->id == $item->unit_id)
+                                                    {{ $unit->name }}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            {{ $item->phone }}
+                                        </td>
+                                        <td>
+                                            {{ $item->email }}
+                                        </td>
+                                        <td>
+                                            {{ $item->role }}
+                                        </td>
+                                        <td>
+                                            {{ $item->address }}
+                                        </td>
+                                        <td class="d-action">
+                                            <a href="{{ route('employee.edit', ['id' => $item->id]) }}"
+                                                class="btn-warning btn btn-xs"><i class="fa fa-pencil-square-o"
                                                     aria-hidden="true"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            <form action="{{ route('employee.destroy', ['id' => $item->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button href="#" class="btn-danger btn btn-xs"><i
+                                                        class="fa fa-trash" aria-hidden="true"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="8">
+                                    <td colspan="9">
                                         <ul class="pagination pull-right"></ul>
                                     </td>
                                 </tr>

@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hotel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class HotelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $hotel;
+    public function __construct(){
+        $this->hotel = new Hotel();
+    }
     public function index()
     {
-        return view('hotel');
+        $list = $this->hotel->hotels();
+        return view('hotel', compact('list'));
     }
 
     /**
@@ -27,7 +35,17 @@ class HotelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $hotel = Hotel::create([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+        ]);
+
+        $hotel->save();
+        return redirect()->route('hotel');
     }
 
     /**
@@ -43,7 +61,8 @@ class HotelController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $hotel = DB::table('hotels')->select('id', 'name' , 'description')->where('id', $id)->first();
+        return view('hotel_edit') -> with(['hotel'=>$hotel]);
     }
 
     /**
@@ -51,7 +70,16 @@ class HotelController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $hotel = DB::table('hotels')->where('id', $id)
+            ->update([
+                'name' => request()->input('name'),
+                'description' => request()->input('description'),
+            ]);
+        return redirect()->route('hotel');
     }
 
     /**
@@ -59,6 +87,8 @@ class HotelController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $hotel = DB::table('hotels')->where('id', $id);
+        $hotel->delete();
+        return redirect()->route('hotel');
     }
 }

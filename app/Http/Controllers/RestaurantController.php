@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class RestaurantController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $restaurant;
+    public function __construct(){
+        $this->restaurant = new Restaurant();
+    }
     public function index()
     {
-        return view('restaurant');
+        $list = $this->restaurant->restaurants();
+        return view('restaurant', compact('list'));
     }
 
     /**
@@ -27,7 +35,17 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $restaurant = Restaurant::create([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+        ]);
+
+        $restaurant->save();
+        return redirect()->route('restaurant');
     }
 
     /**
@@ -43,7 +61,8 @@ class RestaurantController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $restaurant = DB::table('restaurants')->select('id', 'name' , 'description')->where('id', $id)->first();
+        return view('restaurant_edit') -> with(['restaurant'=>$restaurant]);
     }
 
     /**
@@ -51,7 +70,16 @@ class RestaurantController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $restaurant = DB::table('restaurants')->where('id', $id)
+            ->update([
+                'name' => request()->input('name'),
+                'description' => request()->input('description'),
+            ]);
+        return redirect()->route('restaurant');
     }
 
     /**
@@ -59,6 +87,8 @@ class RestaurantController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $restaurant = DB::table('restaurants')->where('id', $id);
+        $restaurant->delete();
+        return redirect()->route('restaurant');
     }
 }

@@ -24,19 +24,20 @@
 
 
         <div class="ibox-content m-b-sm border-bottom">
-            <form action="">
+            <form action="{{ route('restaurant.store') }}" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-sm-9">
                         <div class="form-group">
-                            <label class="control-label" for="order_id">Tên nhà hàng</label>
-                            <input type="text" id="order_id" name="order_id" value=""
+                            <label class="control-label" for="name">Tên nhà hàng</label>
+                            <input type="text" id="name" name="name" value=""
                                 placeholder="Nhập tên nhà hàng" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label class="control-label" for="amount">Số sao</label>
-                            <input type="text" id="amount" name="amount" value="" placeholder="****"
+                            <label class="control-label" for="description">Mô tả</label>
+                            <input type="text" id="description" name="description" value="" placeholder="****"
                                 class="form-control">
                         </div>
                     </div>
@@ -60,50 +61,34 @@
                                 <tr>
                                     <th>Nhà hàng ID</th>
                                     <th data-hide="phone">Tên nhà hàng</th>
-                                    <th data-hide="phone">Số sao</th>
+                                    <th data-hide="phone">Mô tả</th>
                                     <th class="text-right" data-sort-ignore="true">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($list as $item)
                                 <tr>
                                     <td>
-                                        3214
+                                        {{ $item->id }}
                                     </td>
                                     <td>
-                                        Du lịch 2 ngày 1
+                                        {{ $item->name }}
                                     </td>
                                     <td>
-                                        ****
+                                        {{ $item->description }}
                                     </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
+                                    <td class="d-action">
+                                            <a href="{{ route('restaurant.edit', ['id' => $item->id]) }}" class="btn-warning btn btn-xs"><i
                                                     class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i></a>
-                                        </div>
+                                            <form action="{{ route('restaurant.destroy', ['id' => $item->id]) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-danger btn btn-xs"><i class="fa fa-trash"
+                                                aria-hidden="true"></i></button>
+                                            </form>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        3214
-                                    </td>
-                                    <td>
-                                        Du lịch 2 ngày 1 đêm Du lịch 2 ngày 1 đêmDu lịch 2 ngày 1 đêmDu lịch 2 ngày 1 đêmDu
-                                        lịch 2 ngày 1 đêmDu lịch 2 ngày 1 đêm
-                                    </td>
-                                    <td>
-                                        ***
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>

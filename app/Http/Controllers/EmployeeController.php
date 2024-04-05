@@ -54,12 +54,15 @@ class EmployeeController extends Controller
             'role' => 'required'
         ]);
 
+        $birthday = $this->formatDate($request->input('birthday'));
+
         $employee = Employee::create([
             'name' => $request->input('name'),
             'phone' => $request->input('phone'),
             'gender' => $request->input('gender'),
             'address' => $request->input('address'),
-            'birthday' => \DB::raw("STR_TO_DATE('{$request->input('birthday')}', '%m/%d/%Y')"),
+            // 'birthday' => \DB::raw("STR_TO_DATE('{$request->input('birthday')}', '%m/%d/%Y')"),
+            'birthday' => $birthday,
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
             'unit_id' => $request->input('unit_id'),
@@ -69,7 +72,17 @@ class EmployeeController extends Controller
         $employee->save();
         return redirect()->route('employee');
     }
-
+    private function formatDate($date)
+    {
+        // Kiểm tra xem ngày tháng có đúng định dạng '%m/%d/%Y' hay không
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) {
+            // Nếu đúng định dạng, chuyển đổi thành định dạng 'Y-m-d'
+            return date('Y-m-d', strtotime(str_replace('/', '-', $date)));
+        } else {
+            // Ngược lại, giữ nguyên giá trị của ngày tháng
+            return $date;
+        }
+    }
     /**
      * Display the specified resource.
      */
@@ -113,13 +126,16 @@ class EmployeeController extends Controller
             'role' => 'required'
         ]);
 
+        $birthday = $this->formatDate($request->input('birthday'));
+
         $employee = DB::table('employees')->where('id', $id)
             ->update([
                 'name' => $request->input('name'),
                 'phone' => $request->input('phone'),
                 'gender' => $request->input('gender'),
                 'address' => $request->input('address'),
-                'birthday' => $request->input('birthday'),
+                'birthday' => $birthday,
+                // 'birthday' => $request->input('birthday'),
                 'email' => $request->input('email'),
                 // 'password' => bcrypt($request->input('password')),
                 'unit_id' => $request->input('unit_id'),

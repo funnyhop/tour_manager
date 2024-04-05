@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
-            $table->double('price', 8, 2);
-            $table->text('image')->nullable()->default('img/home/product-1')->comment('Image URL');
+            $table->date('start_date');
+            $table->Time('start_time');
+            $table->date('end_date');
+            $table->Time('end_time');
+            $table->decimal('price', 10, 2);
+            $table->text('image')->nullable()->default('product-1.png')->comment('Image URL');
+            $table->string('outstanding');
             $table->timestamps();
         });
     }

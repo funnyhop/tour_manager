@@ -48,7 +48,7 @@
                             <div class="input-group date">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_added"
                                     type="text" name="birthday" class="form-control" placeholder="03/27/2024"
-                                    value="01/01/2024">
+                                    value="01/01/2001">
                             </div>
                         </div>
                     </div>

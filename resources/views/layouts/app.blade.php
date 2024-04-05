@@ -12,13 +12,18 @@
     <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet">
+    <link href="{{ asset('css/plugins/footable/footable.core.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
 
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     <!-- Data picker -->
     <link href="{{ asset('css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
+    <!-- Clockpicker -->
+    <link href="{{ asset('css/plugins/clockpicker/clockpicker.css') }}" rel="stylesheet">
+
     @yield('style')
 </head>
 
@@ -73,12 +78,24 @@
             <script src="js/demo/sparkline-demo.js"></script> --}}
 
             <!-- Data picker -->
-            <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+            <script src="{{ asset('js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+            <!-- Clockpicker -->
+            <script src="{{ asset('js/plugins/clockpicker/clockpicker.js') }}"></script>
 
             <!-- FooTable -->
-            <script src="js/plugins/footable/footable.all.min.js"></script>
-
-
+            <script src="{{ asset('js/plugins/footable/footable.all.min.js') }}"></script>
+             @yield('scripts')
+            <!-- iCheck -->
+            <script src="{{ asset('js/plugins/iCheck/icheck.min.js') }}"></script>
+            <script>
+                $(document).ready(function() {
+                    // iCheck
+                    $('.i-checks').iCheck({
+                        checkboxClass: 'icheckbox_square-green',
+                        radioClass: 'iradio_square-green',
+                    });
+                });
+            </script>
             <script>
                 $(document).ready(function() {
 
@@ -110,6 +127,8 @@
                     }
                 });
             </script>
+
+
             <script>
                 $(document).ready(function() {
                     $('.chart').easyPieChart({

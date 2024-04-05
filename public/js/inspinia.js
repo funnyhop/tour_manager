@@ -195,6 +195,16 @@ $(document).ready(function () {
         calendarWeeks: true,
         autoclose: true
     });
+    // Thêm clockpicker cho input với id là 'start_time'
+    $('#start_time').clockpicker({
+        autoclose: true
+    });
+
+    // Thêm clockpicker cho input với id là 'end_time'
+    $('#end_time').clockpicker({
+        autoclose: true
+    });
+
     //panigative
     $('.footable').footable();
 

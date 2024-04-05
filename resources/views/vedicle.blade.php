@@ -24,19 +24,20 @@
 
 
         <div class="ibox-content m-b-sm border-bottom">
-            <form action="">
+            <form action="{{ route('vehicle.store') }}" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-sm-9">
                         <div class="form-group">
-                            <label class="control-label" for="order_id">Tên phương tiện</label>
-                            <input type="text" id="order_id" name="order_id" value=""
+                            <label class="control-label" for="name">Tên phương tiện</label>
+                            <input type="text" id="name" name="name" value=""
                                 placeholder="Nhập tên phương tiện" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label class="control-label" for="amount">Loại phương tiện</label>
-                            <input type="text" id="amount" name="amount" value="" placeholder="Ô tô"
+                            <label class="control-label" for="type">Loại phương tiện</label>
+                            <input type="text" id="type" name="type" value="" placeholder="Ô tô"
                                 class="form-control">
                         </div>
                     </div>
@@ -65,44 +66,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        3214
-                                    </td>
-                                    <td>
-                                        Xe khách 11 chỗ
-                                    </td>
-                                    <td>
-                                        Ô tô
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
+                                @foreach ($list as $item)
+                                    <tr>
+                                        <td>
+                                            {{ $item->id }}
+                                        </td>
+                                        <td>
+                                            {{ $item->name }}
+                                        </td>
+                                        <td>
+                                            {{ $item->type }}
+                                        </td>
+                                        <td class="d-action">
+                                            <a href="{{ route('vehicle.edit', ['id' => $item->id]) }}" class="btn-warning btn btn-xs"><i
                                                     class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        3214
-                                    </td>
-                                    <td>
-                                        Tàu siêu tốc 32 chỗ
-                                    </td>
-                                    <td>
-                                        Tàu thuyền
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            <form action="{{ route('vehicle.destroy', ['id' => $item->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn-danger btn btn-xs"><i class="fa fa-trash"
+                                                        aria-hidden="true"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>

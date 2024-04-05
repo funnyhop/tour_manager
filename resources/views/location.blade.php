@@ -24,26 +24,27 @@
 
 
         <div class="ibox-content m-b-sm border-bottom">
-            <form action="">
+            <form action="{{ route('location.store') }}" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label class="control-label" for="order_id">Tên địa điểm</label>
-                            <input type="text" id="order_id" name="order_id" value=""
+                            <label class="control-label" for="name">Tên địa điểm</label>
+                            <input type="text" id="name" name="name" value=""
                                 placeholder="Nhập tên địa điểm" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label class="control-label" for="amount">Dịch vụ</label>
-                            <input type="text" id="amount" name="service" value="" placeholder="Tham quan / trải nghiệm"
-                                class="form-control">
+                            <label class="control-label" for="service">Dịch vụ</label>
+                            <input type="text" id="service" name="service" value=""
+                                placeholder="Tham quan / trải nghiệm" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label class="control-label" for="amount">Giá</label>
-                            <input type="text" id="amount" name="amount" value="" placeholder="20000đ"
+                            <label class="control-label" for="price">Giá</label>
+                            <input type="text" id="price" name="price" value="" placeholder="20000"
                                 class="form-control">
                         </div>
                     </div>
@@ -73,50 +74,34 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        3214
-                                    </td>
-                                    <td>
-                                        Du lịch 2 ngày 1
-                                    </td>
-                                    <td>
-                                        Tham quan
-                                    </td>
-                                    <td>
-                                        0đ
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
+                                @foreach ($list as $item)
+                                    <tr>
+                                        <td>
+                                            {{ $item->id }}
+                                        </td>
+                                        <td>
+                                            {{ $item->name }}
+                                        </td>
+                                        <td>
+                                            {{ $item->service }}
+                                        </td>
+                                        <td>
+                                            {{ $item->price }}
+                                        </td>
+                                        <td class="d-action">
+                                            <a href="{{ route('location.edit', ['id' => $item->id]) }}"
+                                                class="btn-warning btn btn-xs"><i class="fa fa-pencil-square-o"
                                                     aria-hidden="true"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        3214
-                                    </td>
-                                    <td>
-                                        Du lịch 2 ngày 1
-                                    </td>
-                                    <td>
-                                        Tham quan và trải nghiệm
-                                    </td>
-                                    <td>
-                                        10000đ
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            <form action="{{ route('location.destroy', ['id' => $item->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn-danger btn btn-xs"><i class="fa fa-trash"
+                                                        aria-hidden="true"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>

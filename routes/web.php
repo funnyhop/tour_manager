@@ -47,6 +47,11 @@ Route::middleware([])->group(function () {
     Route::delete('customer/{id}',[CustomerController::class, 'destroy'])->name('customer.destroy');
 
     Route::get('eat', [EatController::class, 'index'])->name('eat');
+    // Route::get('eat/create', [EatController::class, 'create'])->name('eat.create');
+    Route::post('eat',[EatController::class,'store'])->name('eat.store');
+    Route::get('eat/{tour_id}/{location_id}/{restaurant_id}', [EatController::class, 'edit'])->name('eat.edit');
+    Route::match(['put','patch'],'eat/{tour_id}/{location_id}/{restaurant_id}', [EatController::class, 'update'])->name('eat.update');
+    Route::delete('eat/{tour_id}/{location_id}/{restaurant_id}',[EatController::class, 'destroy'])->name('eat.destroy');
 
     Route::get('employee_position', [Employee_PositionController::class, 'index'])->name('employee_position');
     // Route::get('employee_position/create', [Employee_PositionController::class, 'create'])->name('employee_position.create');

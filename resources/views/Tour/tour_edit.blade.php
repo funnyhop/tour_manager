@@ -61,7 +61,7 @@
                             <label class="control-label" for="date_added">Ngày bắt đầu</label>
                             <div class="input-group date">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_added"
-                                    type="text" class="form-control" placeholder="04/30/2024" name="start_date"
+                                    type="text" class="form-control" placeholder="01/01/2024" name="start_date"
                                     value="{{ $tour->start_date }}">
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                             <label class="control-label" for="date_modified">Ngày kết thúc</label>
                             <div class="input-group date">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
-                                    id="date_modified" type="text" class="form-control" placeholder="03/29/2024"
+                                    id="date_modified" type="text" class="form-control" placeholder="01/01/2024"
                                     name="end_date" value="{{ $tour->end_date }}">
                             </div>
                         </div>

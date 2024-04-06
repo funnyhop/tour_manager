@@ -51,7 +51,7 @@
                             <label class="control-label" for="date_added">Ngày sinh</label>
                             <div class="input-group date">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_added"
-                                    type="text" class="form-control" placeholder="03/27/2024"
+                                    type="text" class="form-control" placeholder="01/01/2024"
                                     value="{{ $customer->birthday }}" name="birthday">
                             </div>
                         </div>

@@ -33,6 +33,11 @@ use App\Http\Controllers\Employee_PositionController;
 
 Route::middleware([])->group(function () {
     Route::get('accommodation', [AccommodationController::class, 'index'])->name('accommodation');
+    // Route::get('accommodation/create', [AccommodationController::class, 'create'])->name('accommodation.create');
+    Route::post('accommodation',[AccommodationController::class,'store'])->name('accommodation.store');
+    Route::get('accommodation/{tour_id}/{location_id}/{hotel_id}', [AccommodationController::class, 'edit'])->name('accommodation.edit');
+    Route::match(['put','patch'],'accommodation/{tour_id}/{location_id}/{hotel_id}', [AccommodationController::class, 'update'])->name('accommodation.update');
+    Route::delete('accommodation/{tour_id}/{location_id}/{hotel_id}',[AccommodationController::class, 'destroy'])->name('accommodation.destroy');
 
     Route::get('bill', [BillController::class, 'index'])->name('bill');
     Route::get('bill_detail', [BillController::class, 'show'])->name('bill_detail');

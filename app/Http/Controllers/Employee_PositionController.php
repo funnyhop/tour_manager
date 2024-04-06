@@ -3,15 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Employee_position;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class Employee_PositionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $employee_position;
+    public function __construct(){
+        $this->employee_position = new Employee_position();
+    }
     public function index()
     {
-        return view('Company_structure.employee_position');
+        $list = $this->employee_position->employee_positions();
+        $employees = DB::table('employees')->get()->all();
+        $offices = DB::table('offices')->get()->all();
+
+        return view('Company_structure.employee_position', compact( 'list','employees','offices'));
     }
 
     /**
@@ -27,13 +38,38 @@ class Employee_PositionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'employee_id' => 'required',
+            'office_id' => 'required',
+            'effective' => 'required',
+        ]);
+
+        $effective = $this->formatDate($request->input('effective'));
+
+        $employee_position = DB::table('employee_positions')->insert([
+            'employee_id' => $request->input('employee_id'),
+            'office_id' => $request->input('office_id'),
+            'effective' => $effective,
+        ]);
+
+        return redirect()->route('employee_position');
     }
 
+    private function formatDate($date)
+    {
+        // Kiểm tra xem ngày tháng có đúng định dạng '%m/%d/%Y' hay không
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) {
+            // Nếu đúng định dạng, chuyển đổi thành định dạng 'Y-m-d'
+            return date('Y-m-d', strtotime(str_replace('/', '-', $date)));
+        } else {
+            // Ngược lại, giữ nguyên giá trị của ngày tháng
+            return $date;
+        }
+    }
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $employee_id, $office_id)
     {
         //
     }
@@ -41,24 +77,56 @@ class Employee_PositionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit( $employee_id, $office_id)
     {
-        //
+        $employees = DB::table('employees')->get()->all();
+        $offices = DB::table('offices')->get()->all();
+        $employee_position = DB::table('employee_positions')->select('employee_id' , 'office_id', 'effective')
+        ->where('employee_id', $employee_id)
+        ->where('office_id', $office_id)
+        ->first();
+
+        return view('Company_structure.employee_position_edit', [
+            'employee_position'=>$employee_position,
+            'employees' => $employees,
+            'offices' => $offices,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,  $employee_id, $office_id)
     {
-        //
+        $request->validate([
+            'employee_id' => 'required',
+            'office_id' => 'required',
+            'effective' => 'required',
+        ]);
+
+        $effective = $this->formatDate($request->input('effective'));
+
+        $employee_position = DB::table('employee_positions')
+        ->where('employee_id', $employee_id)
+        ->where('office_id', $office_id)
+            ->update([
+                'employee_id' => $request->input('employee_id'),
+                'office_id' => $request->input('office_id'),
+                'effective' => $effective,
+            ]);
+        return redirect()->route('employee_position');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy( $employee_id, $office_id)
     {
-        //
+        $employee_position = DB::table('employee_positions')
+        ->where('employee_id', $employee_id)
+        ->where('office_id', $office_id);
+
+        $employee_position->delete();
+        return redirect()->route('employee_position');
     }
 }

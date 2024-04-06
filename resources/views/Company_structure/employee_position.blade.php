@@ -25,23 +25,28 @@
 
 
         <div class="ibox-content m-b-sm border-bottom">
-            <form action="">
+            <form action="{{ route('employee_position.store') }}" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="control-label">Nhân viên ID</label>
-                            <select class="form-control">
+                            <select class="form-control" name="employee_id">
                                 <option selected disabled>Chọn ID nhân viên</option>
-                                <option value="">Enabled</option>
+                                @foreach ($employees as $employee)
+                                    <option value="{{ $employee->id }}">{{ $employee->id }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="control-label">Chức vụ</label>
-                            <select class="form-control">
+                            <select class="form-control" name="office_id">
                                 <option selected disabled>Chọn chức vụ</option>
-                                <option value="">Enabled</option>
+                                @foreach ($offices as $office)
+                                    <option value="{{ $office->id }}">{{ $office->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -50,7 +55,8 @@
                             <label class="control-label" for="date_added">Ngày hiệu lực</label>
                             <div class="input-group date">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_added"
-                                    type="text" class="form-control" placeholder="03/27/2024" value="03/27/2024">
+                                    name="effective" type="text" class="form-control" placeholder="04/30/2024"
+                                    value="04/30/2024">
                             </div>
                         </div>
                     </div>
@@ -72,32 +78,46 @@
                         <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
                             <thead>
                                 <tr>
-                                    <th>Nhân viên ID</th>
-                                    <th data-hide="phone">Tên chức vụ</th>
+                                    <th>Nhân viên</th>
+                                    <th data-hide="phone">Chức vụ</th>
                                     <th data-hide="phone">Ngày có hiệu lực</th>
                                     <th class="text-right" data-sort-ignore="true">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        3214
-                                    </td>
-                                    <td>
-                                        Trưởng phòng
-                                    </td>
-                                    <td>
-                                        03/29/2024
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
+                                @foreach ($list as $item)
+                                    <tr>
+                                        <td>
+                                            @foreach ($employees as $employee)
+                                                @if ($item->employee_id == $employee->id)
+                                                    {{ $employee->name }}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach ($offices as $office)
+                                                @if ($item->office_id == $office->id)
+                                                    {{ $office->name }}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            {{ $item->effective }}
+                                        </td>
+                                        <td class="d-action">
+                                            <a href="{{ route('employee_position.edit', ['employee_id' => $item->employee_id, 'office_id' => $item->office_id]) }}" class="btn-warning btn btn-xs"><i
                                                     class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            <form
+                                                action="{{ route('employee_position.destroy', ['employee_id' => $item->employee_id, 'office_id' => $item->office_id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn-danger btn btn-xs"><i class="fa fa-trash"
+                                                        aria-hidden="true"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('employee_positions', function (Blueprint $table) {
             // $table->id();
+            $table->primary(['employee_id', 'office_id']);
             $table->date('effective');
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('office_id');
@@ -22,7 +23,7 @@ return new class extends Migration
             $table->foreign('office_id')->references('id')->on('offices');
             $table->timestamps();
 
-            $table->primary(["employee_id", "office_id"]);
+
         });
     }
 

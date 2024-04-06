@@ -84,6 +84,11 @@ Route::middleware([])->group(function () {
     Route::delete('location/{id}',[LocationController::class, 'destroy'])->name('location.destroy');
 
     Route::get('move', [MoveController::class, 'index'])->name('move');
+    // Route::get('employee_position/create', [MoveController::class, 'create'])->name('employee_position.create');
+    Route::post('move',[MoveController::class,'store'])->name('move.store');
+    Route::get('move/{tour_id}/{location_id}/{vehicle_id}', [MoveController::class, 'edit'])->name('move.edit');
+    Route::match(['put','patch'],'move/{tour_id}/{location_id}/{vehicle_id}', [MoveController::class, 'update'])->name('move.update');
+    Route::delete('move/{tour_id}/{location_id}/{vehicle_id}',[MoveController::class, 'destroy'])->name('move.destroy');
 
     Route::get('office', [OfficeController::class, 'index'])->name('office');
     // Route::get('office/create', [OfficeController::class, 'create'])->name('office.create');

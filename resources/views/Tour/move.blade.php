@@ -27,32 +27,39 @@
 
 
         <div class="ibox-content m-b-sm border-bottom">
-            <form action="">
+            <form action="{{ route('move.store') }}" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label class="control-label" for="status">Tour du lịch</label>
-                            <select name="status" id="status" class="form-control">
+                            <label class="control-label" for="tour_id">Tour du lịch</label>
+                            <select name="tour_id" id="tour_id" class="form-control">
                                 <option selected disabled>Chọn tour</option>
-                                <option value="">Enabled</option>
+                                @foreach ($tours as $tour)
+                                    <option value="{{ $tour->id }}">{{ $tour->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label class="control-label" for="status">Địa điểm</label>
-                            <select name="status" id="status" class="form-control">
+                            <label class="control-label" for="location_id">Địa điểm</label>
+                            <select name="location_id" id="location_id" class="form-control">
                                 <option selected disabled>Chọn địa điểm</option>
-                                <option value="">Enabled</option>
+                                @foreach ($locations as $location)
+                                    <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label class="control-label" for="status">Phương tiện</label>
-                            <select name="status" id="status" class="form-control">
+                            <label class="control-label" for="vehicle_id">Phương tiện</label>
+                            <select name="vehicle_id" id="vehicle_id" class="form-control">
                                 <option selected disabled>Chọn phương tiện</option>
-                                <option value="">Enabled</option>
+                                @foreach ($vehicles as $vehicle)
+                                    <option value="{{ $vehicle->id }}">{{ $vehicle->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -61,7 +68,8 @@
                             <label class="control-label" for="date_added">Ngày</label>
                             <div class="input-group date">
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_added"
-                                    type="text" class="form-control" placeholder="03/27/2024" value="03/27/2024">
+                                    name="date_of_tour" type="text" class="form-control" placeholder="01/01/2024"
+                                    value="01/01/2024">
                             </div>
                         </div>
                     </div>
@@ -91,28 +99,47 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        Du lịch 2 ngày 3 đêm
-                                    </td>
-                                    <td>
-                                        Sapa
-                                    </td>
-                                    <td>
-                                        Sapa TV
-                                    </td>
-                                    <td>
-                                        03/27/2024
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn-warning btn btn-xs"><i
-                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
+                                @foreach ($list as $item)
+                                    <tr>
+                                        <td>
+                                            @foreach ($tours as $tour)
+                                                @if ($item->tour_id == $tour->id)
+                                                    {{ $tour->name }}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach ($locations as $location)
+                                                @if ($item->location_id == $location->id)
+                                                    {{ $location->name }}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach ($vehicles as $vehicle)
+                                                @if ($item->vehicle_id == $vehicle->id)
+                                                    {{ $vehicle->name }}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            {{ $item->date_of_tour }}
+                                        </td>
+                                        <td class="d-action">
+                                            <a href="{{ route('move.edit', ['tour_id' => $item->tour_id, 'location_id' => $item->location_id, 'vehicle_id' => $item->vehicle_id]) }}"
+                                                class="btn-warning btn btn-xs"><i class="fa fa-pencil-square-o"
                                                     aria-hidden="true"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            <form
+                                                action="{{ route('move.destroy', ['tour_id' => $item->tour_id, 'location_id' => $item->location_id, 'vehicle_id' => $item->vehicle_id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn-danger btn btn-xs"><i class="fa fa-trash"
+                                                        aria-hidden="true"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>

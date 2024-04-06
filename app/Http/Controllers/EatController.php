@@ -47,11 +47,6 @@ class EatController extends Controller
 
         // $date_of_tour = $this->formatDate($request->input('date_of_tour'));
         $date_of_tour = $request->input('date_of_tour');
-        if ($request->has('date_of_tour')) {
-            $date_of_tour = $this->formatDate($date_of_tour);
-        } else {
-            $date_of_tour = null; // hoặc giá trị mặc định khác
-        }
 
         $eat = DB::table('eats')->insert([
             'date_of_tour' => $date_of_tour,

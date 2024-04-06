@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $customer;
+    public function __construct(){
+        $this->customer = new Customer();
+    }
     public function index()
     {
-        return view('User_manager.customer');
+        $list = $this->customer->customers();
+        $opjects =  DB::table('opjects')->get()->all();
+        return view('User_manager.customer', compact('list','opjects'));
     }
 
     /**
@@ -27,9 +36,51 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        // \dd($request);
+        $request->validate([
+            'name' => 'required|string',
+            'phone' => 'required|regex:/^0\d{9}$/',
+            'gender' => 'required|string',
+            'address' => 'required',
+            'birthday' => 'required',
+            'email' => 'required|email',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])(?=.*[a-z]).{8,}$/'
+            ],
+            'opject_id' => 'required',
+        ]);
 
+        $birthday = $this->formatDate($request->input('birthday'));
+
+        $customer = Customer::create([
+            'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
+            'gender' => $request->input('gender'),
+            'address' => $request->input('address'),
+            // 'birthday' => \DB::raw("STR_TO_DATE('{$request->input('birthday')}', '%m/%d/%Y')"),
+            'birthday' => $birthday,
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+            'opject_id' => $request->input('opject_id'),
+        ]);
+
+        $customer->save();
+        return redirect()->route('customer');
+    }
+    private function formatDate($date)
+    {
+        // Kiểm tra xem ngày tháng có đúng định dạng '%m/%d/%Y' hay không
+        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) {
+            // Nếu đúng định dạng, chuyển đổi thành định dạng 'Y-m-d'
+            return date('Y-m-d', strtotime(str_replace('/', '-', $date)));
+        } else {
+            // Ngược lại, giữ nguyên giá trị của ngày tháng
+            return $date;
+        }
+    }
     /**
      * Display the specified resource.
      */
@@ -43,7 +94,12 @@ class CustomerController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $opjects =  DB::table('opjects')->get()->all();
+        $customer = DB::table('customers')->select('id', 'name', 'phone', 'gender', 'address', 'birthday', 'email', 'password', 'opject_id')->where('id', $id)->first();
+        return view('User_manager.customer_edit', [
+            'customer' => $customer,
+            'opjects' => $opjects
+        ]);
     }
 
     /**
@@ -51,7 +107,37 @@ class CustomerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'phone' => 'required|regex:/^0\d{9}$/',
+            'gender' => 'required|string',
+            'address' => 'required',
+            'birthday' => 'required',
+            'email' => 'required|email',
+            // 'password' => [
+            //     'required',
+            //     'string',
+            //     'min:8',
+            //     'regex:/^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])(?=.*[a-z]).{8,}$/'
+            // ],
+            'opject_id' => 'required',
+        ]);
+
+        $birthday = $this->formatDate($request->input('birthday'));
+
+        $customer = DB::table('customers')->where('id', $id)
+            ->update([
+                'name' => $request->input('name'),
+                'phone' => $request->input('phone'),
+                'gender' => $request->input('gender'),
+                'address' => $request->input('address'),
+                'birthday' => $birthday,
+                // 'birthday' => $request->input('birthday'),
+                'email' => $request->input('email'),
+                // 'password' => bcrypt($request->input('password')),
+                'opject_id' => $request->input('opject_id'),
+            ]);
+        return redirect()->route('customer');
     }
 
     /**
@@ -59,6 +145,8 @@ class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $customer = DB::table('customers')->where('id', $id);
+        $customer->delete();
+        return redirect()->route('customer');
     }
 }

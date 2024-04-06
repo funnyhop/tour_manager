@@ -40,6 +40,12 @@ Route::middleware([])->group(function () {
     Route::get('invoice_print', [BillController::class, 'invoice_print'])->name('invoice_print');
 
     Route::get('customer', [CustomerController::class, 'index'])->name('customer');
+    // Route::get('customer/create', [CustomerController::class, 'create'])->name('customer.create');
+    Route::post('customer',[CustomerController::class,'store'])->name('customer.store');
+    Route::get('customer/{id}', [CustomerController::class, 'edit'])->name('customer.edit');
+    Route::match(['put','patch'],'customer/{id}', [CustomerController::class, 'update'])->name('customer.update');
+    Route::delete('customer/{id}',[CustomerController::class, 'destroy'])->name('customer.destroy');
+
     Route::get('eat', [EatController::class, 'index'])->name('eat');
     Route::get('employee_position', [Employee_PositionController::class, 'index'])->name('employee_position');
 

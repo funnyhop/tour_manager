@@ -110,6 +110,11 @@ Route::middleware([])->group(function () {
     Route::delete('opject/{id}',[OpjectController::class, 'destroy'])->name('opject.destroy');
 
     Route::get('order', [OrderController::class, 'index'])->name('order');
+    // Route::get('order/create', [OrderController::class, 'create'])->name('order.create');
+    Route::post('order',[OrderController::class,'store'])->name('order.store');
+    Route::get('order/{id}', [OrderController::class, 'edit'])->name('order.edit');
+    Route::match(['put','patch'],'order/{id}', [OrderController::class, 'update'])->name('order.update');
+    Route::delete('order/{id}',[OrderController::class, 'destroy'])->name('order.destroy');
 
     Route::get('restaurant', [RestaurantController::class, 'index'])->name('restaurant');
     // Route::get('restaurant/create', [RestaurantController::class, 'create'])->name('restaurant.create');

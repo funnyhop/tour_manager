@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('quantity');
-            $table->string('status');
+            $table->string('status')->default(0)->comment('0(pending) / 1(paid) / 2(cancel)');
 
             $table->unsignedBigInteger('tour_id');
             $table->foreign('tour_id')->references('id')->on('tours');

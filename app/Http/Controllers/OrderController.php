@@ -2,16 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $order;
+    public function __construct(){
+        $this->order = new Order();
+    }
     public function index()
     {
-        return view('Order.order');
+        $list = $this->order->orders();
+        $customers = DB::table('customers')->get()->all();
+        $tours = DB::table('tours')->get()->all();
+        return view('Order.order', compact('list', 'customers','tours'));
     }
 
     /**
@@ -27,9 +37,23 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'tour_id' => 'required',
+            'customer_id' => 'required',
+            'quantity' => 'required|numeric',
+        ]);
 
+        $order = Order::create([
+            'tour_id' => $request->input('tour_id'),
+            'customer_id' => $request->input('customer_id'),
+            'quantity' => $request->input('quantity'),
+            'status' => $request->input('status'),
+            'employee_id' => $request->input('employee_id'),
+        ]);
+
+        $order->save();
+        return redirect()->route('order');
+    }
     /**
      * Display the specified resource.
      */
@@ -43,7 +67,14 @@ class OrderController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $customers = DB::table('customers')->get()->all();
+        $tours = DB::table('tours')->get()->all();
+        $order = DB::table('orders')->select('id', 'tour_id' , 'customer_id', 'quantity', 'status', 'created_at', 'employee_id')->where('id', $id)->first();
+        return view('Order.order_edit', [
+            'order'=>$order,
+            'customers' => $customers,
+            'tours' => $tours ,
+        ]);
     }
 
     /**
@@ -51,7 +82,21 @@ class OrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'tour_id' => 'required',
+            'customer_id' => 'required',
+            'quantity' => 'required|numeric',
+        ]);
+
+        $order = DB::table('orders')->where('id', $id)
+            ->update([
+                'tour_id' => $request->input('tour_id'),
+                'customer_id' => $request->input('customer_id'),
+                'quantity' => $request->input('quantity'),
+                'status' => $request->input('status'),
+                'employee_id' => $request->input('employee_id'),
+            ]);
+        return redirect()->route('order');
     }
 
     /**
@@ -59,6 +104,8 @@ class OrderController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $order = DB::table('orders')->where('id', $id);
+        $order->delete();
+        return redirect()->route('order');
     }
 }

@@ -21,9 +21,24 @@ class BillController extends Controller
 
     public function index()
     {
-        return view('Order.bill');
+        $list = $this->bill->bills();
+        // $orders =  DB::table('orders')->get()->all();
+        $employees =  DB::table('employees')->get()->all();
+        return view('Order.bill', compact('list', 'employees'));
     }
-    public function invoice(Request $request, string $id)
+    public function bill_print(string $id)
+    {
+        $bill = DB::table('bills')
+        ->where('id', $id)
+        ->first();
+        $orders =  DB::table('orders')->get()->all();
+        $customers = DB::table('customers')->get()->all();
+        $tours = DB::table('tours')->get()->all();
+        $employees = DB::table('employees')->get()->all();
+        return view('Order.bill_print', compact('orders', 'customers', 'tours','employees','bill'));
+
+    }
+    public function invoice(string $id)
     {
         $i=0;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -36,7 +51,7 @@ class BillController extends Controller
         $employees = DB::table('employees')->get()->all();
         return view('Order.invoice', compact('ord', 'customers', 'tours','employees', 'i', 'now'));
     }
-    public function invoice_print(Request $request, string $id)
+    public function invoice_print(string $id)
     {
         $i=0;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -87,7 +102,15 @@ class BillController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $bill = DB::table('bills')
+        ->where('id', $id)
+        ->first();
+        $orders =  DB::table('orders')->get()->all();
+        $customers = DB::table('customers')->get()->all();
+        $tours = DB::table('tours')->get()->all();
+        $employees = DB::table('employees')->get()->all();
+        return view('Order.bill_detail', compact('orders', 'customers', 'tours','employees','bill'));
+
     }
 
     /**

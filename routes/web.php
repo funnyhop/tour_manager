@@ -40,7 +40,8 @@ Route::middleware([])->group(function () {
     Route::delete('accommodation/{tour_id}/{location_id}/{hotel_id}',[AccommodationController::class, 'destroy'])->name('accommodation.destroy');
 
     Route::get('bill', [BillController::class, 'index'])->name('bill');
-    Route::get('bill_detail', [BillController::class, 'show'])->name('bill_detail');
+    Route::get('bill_print/{id}', [BillController::class, 'bill_print'])->name('bill_print');
+    Route::get('bill_detail/{id}', [BillController::class, 'show'])->name('bill_detail');
 
     Route::get('invoice/{id}', [BillController::class, 'invoice'])->name('invoice');
     Route::post('invoice',[BillController::class,'store'])->name('invoice.store');

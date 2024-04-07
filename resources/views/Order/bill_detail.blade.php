@@ -23,7 +23,7 @@
         </div>
         <div class="col-lg-4">
             <div class="title-action">
-                <a href="{{ route('invoice_print') }}" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i>
+                <a href="{{ route('bill_print', ['id' => $bill->id]) }}" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i>
                     In hóa đơn </a>
             </div>
         </div>
@@ -46,15 +46,43 @@
 
                             <div class="col-sm-6 text-right">
                                 <h4>Mã hóa đơn</h4>
-                                <h4 class="text-navy">INV-000567F7-00</h4>
+                                <h4 class="text-navy">{{ $bill->id }}</h4>
                                 <span>Đến:</span>
                                 <address>
-                                    <strong>Dinh Thai Hop</strong><br>
-                                    địa chỉddddd ddddddddddđ dddddddddddđ<br>
-                                    <abbr title="Phone">Phone:</abbr> +84 72 099 252
+                                    <strong>
+                                        @foreach ($orders as $order)
+                                            @if ($bill->order_id == $order->id)
+                                                @foreach ($customers as $customer)
+                                                    @if ($order->customer_id == $customer->id)
+                                                        {{ $customer->name }}
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                    </strong><br>
+                                    @foreach ($orders as $order)
+                                        @if ($bill->order_id == $order->id)
+                                            @foreach ($customers as $customer)
+                                                @if ($order->customer_id == $customer->id)
+                                                    {{ $customer->address }}
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    @endforeach
+                                    <br>
+                                    <abbr title="Phone">Phone:</abbr>
+                                    @foreach ($orders as $order)
+                                        @if ($bill->order_id == $order->id)
+                                            @foreach ($customers as $customer)
+                                                @if ($order->customer_id == $customer->id)
+                                                    {{ $customer->phone }}
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    @endforeach
                                 </address>
                                 <p>
-                                    <span><strong>Ngày lập:</strong> Marh 18, 2014</span><br />
+                                    <span><strong>Ngày lập:</strong>{{ $bill->created_at }}</span><br />
                                 </p>
                             </div>
                         </div>
@@ -63,7 +91,7 @@
                             <table class="table invoice-table">
                                 <thead>
                                     <tr>
-                                        <th>Danh sách mặt hàng</th>
+                                        <th>Mặt hàng</th>
                                         <th>Số lượng</th>
                                         <th>Đơn giá</th>
                                         <th>Tổng tiền</th>
@@ -72,12 +100,38 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            Admin Theme with psd project layouts
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                            @foreach ($orders as $order)
+                                                @if ($bill->order_id == $order->id)
+                                                    @foreach ($tours as $tour)
+                                                        @if ($order->tour_id == $tour->id)
+                                                            {{ $tour->name }}
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
                                         </td>
-                                        <td>1</td>
-                                        <td>đ2,000,000.00</td>
-                                        <td>đ2,000,000.00</td>
+                                        <td>
+                                            @foreach ($orders as $order)
+                                                @if ($bill->order_id == $order->id)
+                                                    {{ $ord_quantity = $order->quantity }}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach ($orders as $order)
+                                                @if ($bill->order_id == $order->id)
+                                                    @foreach ($tours as $tour)
+                                                        @if ($order->tour_id == $tour->id)
+                                                            {{ $price = $tour->price }}
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        <?php
+                                        $total = $ord_quantity * $price;
+                                        ?>
+                                        <td>{{ number_format($total, 2) }}</td>
                                     </tr>
 
                                 </tbody>
@@ -87,13 +141,23 @@
                         <table class="table invoice-total">
                             <tbody>
                                 <tr>
+                                    <td><strong>Thuế :</strong></td>
+                                    <?php
+                                    $tax = $total * 0.05;
+                                    ?>
+                                    <td>{{ number_format($tax, 2) }} VND</td>
+                                </tr>
+                                <tr>
                                     <td><strong>Tổng tiền :</strong></td>
-                                    <td>đ2,000,000.00</td>
+                                    <?php
+                                    $paid = $total + $tax;
+                                    ?>
+                                    <td>{{ number_format($paid, 2) }} VND</td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <div class="well m-t">
+                        <div class="well m-t text-center">
                             "Đừng ngồi một chỗ và chờ đợi cơ hội đến. Hãy đứng dậy và tạo ra chúng.”<strong> – Madam C.J.
                                 Walker</strong>
                         </div>

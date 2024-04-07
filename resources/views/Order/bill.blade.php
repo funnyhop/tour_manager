@@ -39,31 +39,35 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($list as $item)
                                 <tr>
                                     <td>
-                                        3214
+                                        {{ $item->id }}
                                     </td>
                                     <td>
-                                        3214
+                                        {{ $item->order_id }}
                                     </td>
                                     <td>
-                                        03/05/2015
+                                        {{ $item->created_at }}
                                     </td>
                                     <td>
-                                        200000đ
+                                        {{ $item->total }} VND
                                     </td>
                                     <td>
-                                        Phương
+                                        @foreach ($employees as $employee)
+                                        @if ($employee->id == $item->employee_id)
+                                        {{ $employee->name }}
+                                        @endif
+                                        @endforeach
                                     </td>
-                                    <td class="text-right">
-                                        <div class="btn-group">
-                                            <a href="/bill_detail" class=" btn-info btn btn-xs"><i class="fa fa-eye"
+                                    <td class="d-action">
+                                            <a href="{{ route('bill_detail', ['id' => $item->id]) }}" class=" btn-warning btn btn-xs"><i class="fa fa-eye"
                                                     aria-hidden="true"></i></a>
-                                            <a href="#" class="btn-danger btn btn-xs"><i class="fa fa-trash"
+                                            <a href="{{ route('bill_print', ['id' => $item->id]) }}" class="btn-primary btn btn-xs"><i class="fa fa-print"
                                                     aria-hidden="true"></i></a>
-                                        </div>
                                     </td>
                                 </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>

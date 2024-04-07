@@ -134,7 +134,11 @@
                                             @endif
                                         </td>
                                         <td>
-                                            {{ $item->employee_id }}
+                                            @foreach ($employees as $employee)
+                                                @if ($item->employee_id == $employee->id)
+                                                    {{ $employee->name }}
+                                                @endif
+                                            @endforeach
                                         </td>
                                         <td>
                                             @foreach ($tours as $tour)
@@ -144,15 +148,33 @@
                                             @endforeach
                                         </td>
                                         <td class="d-action">
-                                            <a href="{{ route('invoice') }}" class=" btn-info btn btn-xs"><i
-                                                    class="fa fa-credit-card" aria-hidden="true"></i></a>
-                                            <form action="{{ route('order.destroy', ['id' => $item->id]) }}"
-                                                method="POST">
-                                                @csrf
-                                                @method('DELETE')
+                                            @if ($item->status == 0)
+                                                <a href="{{ route('invoice', ['id' => $item->id]) }}"
+                                                    class=" btn-info btn btn-xs"><i class="fa fa-credit-card"
+                                                        aria-hidden="true"></i></a>
+                                                <form action="{{ route('order.destroy', ['id' => $item->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn-danger btn btn-xs"><i
+                                                            class="fa fa-trash" aria-hidden="true"></i></button>
+                                                </form>
+                                            @elseif($item->status == 1)
+                                                <a href="#" class=" btn-info btn btn-xs"><i class="fa fa-credit-card"
+                                                        aria-hidden="true"></i></a>
                                                 <button type="submit" class="btn-danger btn btn-xs"><i class="fa fa-trash"
                                                         aria-hidden="true"></i></button>
-                                            </form>
+                                            @else
+                                                <a href="#" class=" btn-info btn btn-xs"><i class="fa fa-credit-card"
+                                                        aria-hidden="true"></i></a>
+                                                <form action="{{ route('order.destroy', ['id' => $item->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn-danger btn btn-xs"><i
+                                                            class="fa fa-trash" aria-hidden="true"></i></button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

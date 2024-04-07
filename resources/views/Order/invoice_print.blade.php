@@ -8,11 +8,11 @@
 
     <title>VietNamTourist | In hóa đơn</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
 </head>
 
@@ -32,15 +32,36 @@
 
                 <div class="col-sm-6 text-right">
                     <h4>Mã hóa đơn</h4>
-                    <h4 class="text-navy">INV-000567F7-00</h4>
+                    <h4 class="text-navy">VNT-00{{ $ord->id }}-0{{ $i + $ord->id }}</h4>
+                    <input type="text" name="id" value="VNT-00{{ $ord->id }}-0{{ $i + $ord->id }}"
+                        hidden />
+                    <input type="text" name="employee_id" value="{{ $ord->employee_id }}" hidden />
+                    <input type="text" name="order_id" value="{{ $ord->id }}" hidden />
                     <span>Đến:</span>
                     <address>
-                        <strong>Dinh Thai Hop</strong><br>
-                        địa chỉddddd ddddddddddđ dddddddddddđ<br>
-                        <abbr title="Phone">Phone:</abbr> +84 72 099 252
+                        <strong>
+                            @foreach ($customers as $customer)
+                                @if ($ord->customer_id == $customer->id)
+                                    {{ $customer->name }}
+                                @endif
+                            @endforeach
+                        </strong><br>
+                        @foreach ($customers as $customer)
+                            @if ($ord->customer_id == $customer->id)
+                                {{ $customer->address }}
+                            @endif
+                        @endforeach
+                        <br>
+                        <abbr title="Phone">Phone:</abbr>
+                        @foreach ($customers as $customer)
+                            @if ($ord->customer_id == $customer->id)
+                                {{ $customer->phone }}
+                            @endif
+                        @endforeach
                     </address>
                     <p>
-                        <span><strong>Ngày lập:</strong> Marh 18, 2014</span><br />
+                        <span><strong>Ngày lập:</strong> {{ $now }}</span><br />
+                        <input type="text" name="created_at" value="{{ $now }}" hidden />
                     </p>
                 </div>
             </div>
@@ -49,22 +70,33 @@
                 <table class="table invoice-table">
                     <thead>
                         <tr>
-                            <th>Danh sách mặt hàng</th>
+                            <th>Mặt hàng</th>
                             <th>Số lượng</th>
                             <th>Đơn giá</th>
-                            <th>Total Price</th>
+                            <th>Tổng tiền</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <div><strong>Admin Theme with psd project layouts</strong></div>
-                                <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua.</small>
+                                @foreach ($tours as $tour)
+                                    @if ($ord->tour_id == $tour->id)
+                                        {{ $tour->name }}
+                                    @endif
+                                @endforeach
                             </td>
-                            <td>1</td>
-                            <td>đ2,000,000.00</td>
-                            <td>đ2,000,000.00</td>
+                            <td>{{ $ord->quantity }}</td>
+                            <td>
+                                @foreach ($tours as $tour)
+                                    @if ($ord->tour_id == $tour->id)
+                                        {{ $price = $tour->price; }}
+                                    @endif
+                                @endforeach
+                            </td>
+                            <?php
+                            $total = $ord->quantity * $price;
+                            ?>
+                            <td>{{ number_format($total, 2) }}</td>
                         </tr>
 
                     </tbody>
@@ -74,25 +106,37 @@
             <table class="table invoice-total">
                 <tbody>
                     <tr>
+                        <td><strong>Thuế :</strong></td>
+                        <?php
+                        $tax = $total * 0.05;
+                        ?>
+                        <td>{{ number_format($tax, 2) }} VND</td>
+                    </tr>
+                    <tr>
                         <td><strong>Tổng tiền :</strong></td>
-                        <td>đ2,000,000.00</td>
+                        <?php
+                        $paid = $total + $tax;
+                        ?>
+                        <td>{{ number_format($paid, 2) }} VND</td>
+                        <input type="text" name="total" value="{{ $paid }}" hidden />
                     </tr>
                 </tbody>
             </table>
-            {{-- <div class="well m-t">
+
+            <div class="well m-t text-center">
                 "Đừng ngồi một chỗ và chờ đợi cơ hội đến. Hãy đứng dậy và tạo ra chúng.”<strong> – Madam C.J.
                     Walker</strong>
-            </div> --}}
+            </div>
         </div>
     </div>
 
     <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
+    <script src="{{ asset('js/inspinia.js') }}"></script>
 
     <script type="text/javascript">
         window.print();

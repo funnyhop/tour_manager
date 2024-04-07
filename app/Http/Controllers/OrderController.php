@@ -21,7 +21,8 @@ class OrderController extends Controller
         $list = $this->order->orders();
         $customers = DB::table('customers')->get()->all();
         $tours = DB::table('tours')->get()->all();
-        return view('Order.order', compact('list', 'customers','tours'));
+        $employees = DB::table('employees')->get()->all();
+        return view('Order.order', compact('list', 'customers','tours', 'employees'));
     }
 
     /**

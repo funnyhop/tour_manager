@@ -41,8 +41,12 @@ Route::middleware([])->group(function () {
 
     Route::get('bill', [BillController::class, 'index'])->name('bill');
     Route::get('bill_detail', [BillController::class, 'show'])->name('bill_detail');
-    Route::get('invoice', [BillController::class, 'invoice'])->name('invoice');
-    Route::get('invoice_print', [BillController::class, 'invoice_print'])->name('invoice_print');
+
+    Route::get('invoice/{id}', [BillController::class, 'invoice'])->name('invoice');
+    Route::post('invoice',[BillController::class,'store'])->name('invoice.store');
+    Route::match(['put','patch'],'invoice/{id}', [BillController::class, 'update'])->name('invoice.update');
+
+    Route::get('invoice_print/{id}', [BillController::class, 'invoice_print'])->name('invoice_print');
 
     Route::get('customer', [CustomerController::class, 'index'])->name('customer');
     // Route::get('customer/create', [CustomerController::class, 'create'])->name('customer.create');

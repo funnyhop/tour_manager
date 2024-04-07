@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bills', function (Blueprint $table) {
-            $table->id();
-            $table->decimal('price', 10, 2)->default(0)
+            $table->string('id')->primary();
+            $table->decimal('total', 10, 2)->default(0)
                 ->comment('Total amount of bill');
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders');

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title')
-    <title>Dashboard - Thanh toán</title>
+    <title>
+        Dashboard - Thanh toán</title>
 @endsection
 @section('content')
     <div class="row wrapper border-bottom white-bg page-heading">
@@ -17,11 +18,14 @@
         </div>
         <div class="col-lg-4">
             <div class="title-action" style="display: flex; justify-content: flex-end;">
-                <form action="" style="margin-right: 10px;">
-                    <input type="text" value="2" hidden>
-                    <button type="submit" class="btn btn-white"><i class="fa fa-ban"></i> Hủy bỏ </button>
+                <form action="{{ route('invoice.update', ['id' => $ord->id]) }}" style="margin-right: 10px;" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <input type="text" value="2" name="status" hidden/>
+                    <button type="submit" class="btn btn-white"><i class="fa fa-ban"></i> Hủy đơn </button>
                 </form>
-                <a href="{{ route('invoice_print') }}" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i> In hóa đơn </a>
+                <a href="{{ route('invoice_print', ['id' => $ord->id]) }}" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i>
+                    In hóa đơn </a>
             </div>
         </div>
 
@@ -29,7 +33,8 @@
 
 
     </div>
-    <form action="">
+    <form action="{{ route('invoice.store') }}" method="POST">
+        @csrf
         <div class="row">
             <div class="col-lg-12">
                 <div class="wrapper wrapper-content animated fadeInRight">
@@ -47,15 +52,36 @@
 
                             <div class="col-sm-6 text-right">
                                 <h4>Mã hóa đơn</h4>
-                                <h4 class="text-navy">INV-000567F7-00</h4>
+                                <h4 class="text-navy">VNT-00{{ $ord->id }}-0{{ $i + $ord->id }}</h4>
+                                <input type="text" name="id" value="VNT-00{{ $ord->id }}-0{{ $i + $ord->id }}"
+                                    hidden />
+                                <input type="text" name="employee_id" value="{{ $ord->employee_id }}" hidden />
+                                <input type="text" name="order_id" value="{{ $ord->id }}" hidden />
                                 <span>Đến:</span>
                                 <address>
-                                    <strong>Dinh Thai Hop</strong><br>
-                                    địa chỉddddd ddddddddddđ dddddddddddđ<br>
-                                    <abbr title="Phone">Phone:</abbr> +84 72 099 252
+                                    <strong>
+                                        @foreach ($customers as $customer)
+                                            @if ($ord->customer_id == $customer->id)
+                                                {{ $customer->name }}
+                                            @endif
+                                        @endforeach
+                                    </strong><br>
+                                    @foreach ($customers as $customer)
+                                        @if ($ord->customer_id == $customer->id)
+                                            {{ $customer->address }}
+                                        @endif
+                                    @endforeach
+                                    <br>
+                                    <abbr title="Phone">Phone:</abbr>
+                                    @foreach ($customers as $customer)
+                                        @if ($ord->customer_id == $customer->id)
+                                            {{ $customer->phone }}
+                                        @endif
+                                    @endforeach
                                 </address>
                                 <p>
-                                    <span><strong>Ngày lập:</strong> Marh 18, 2014</span><br />
+                                    <span><strong>Ngày lập:</strong> {{ $now }}</span><br />
+                                    <input type="text" name="created_at" value="{{ $now }}" hidden />
                                 </p>
                             </div>
                         </div>
@@ -64,7 +90,7 @@
                             <table class="table invoice-table">
                                 <thead>
                                     <tr>
-                                        <th>Danh sách mặt hàng</th>
+                                        <th>Mặt hàng</th>
                                         <th>Số lượng</th>
                                         <th>Đơn giá</th>
                                         <th>Tổng tiền</th>
@@ -73,12 +99,24 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            Admin Theme with psd project layouts
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                            @foreach ($tours as $tour)
+                                                @if ($ord->tour_id == $tour->id)
+                                                    {{ $tour->name }}
+                                                @endif
+                                            @endforeach
                                         </td>
-                                        <td>1</td>
-                                        <td>đ2,000,000.00</td>
-                                        <td>đ2,000,000.00</td>
+                                        <td>{{ $ord->quantity }}</td>
+                                        <td>
+                                            @foreach ($tours as $tour)
+                                                @if ($ord->tour_id == $tour->id)
+                                                    {{ $price = $tour->price; }}
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        <?php
+                                        $total = $ord->quantity * $price;
+                                        ?>
+                                        <td>{{ number_format($total, 2) }}</td>
                                     </tr>
 
                                 </tbody>
@@ -88,8 +126,19 @@
                         <table class="table invoice-total">
                             <tbody>
                                 <tr>
+                                    <td><strong>Thuế :</strong></td>
+                                    <?php
+                                    $tax = $total * 0.05;
+                                    ?>
+                                    <td>{{ number_format($tax, 2) }} VND</td>
+                                </tr>
+                                <tr>
                                     <td><strong>Tổng tiền :</strong></td>
-                                    <td>đ2,000,000.00</td>
+                                    <?php
+                                    $paid = $total + $tax;
+                                    ?>
+                                    <td>{{ number_format($paid, 2) }} VND</td>
+                                    <input type="text" name="total" value="{{ $paid }}" hidden />
                                 </tr>
                             </tbody>
                         </table>
@@ -98,7 +147,7 @@
                                 toán</button>
                         </div>
 
-                        <div class="well m-t">
+                        <div class="well m-t text-center">
                             "Đừng ngồi một chỗ và chờ đợi cơ hội đến. Hãy đứng dậy và tạo ra chúng.”<strong> – Madam C.J.
                                 Walker</strong>
                         </div>

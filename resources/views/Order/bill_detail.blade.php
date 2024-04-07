@@ -23,7 +23,8 @@
         </div>
         <div class="col-lg-4">
             <div class="title-action">
-                <a href="{{ route('bill_print', ['id' => $bill->id]) }}" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i>
+                <a href="{{ route('bill_print', ['id' => $bill->id]) }}" target="_blank" class="btn btn-primary"><i
+                        class="fa fa-print"></i>
                     In hóa đơn </a>
             </div>
         </div>

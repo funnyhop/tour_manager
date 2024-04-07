@@ -89,7 +89,7 @@
                             <td>
                                 @foreach ($tours as $tour)
                                     @if ($ord->tour_id == $tour->id)
-                                        {{ $price = $tour->price; }}
+                                        {{ $price = $tour->price }}
                                     @endif
                                 @endforeach
                             </td>

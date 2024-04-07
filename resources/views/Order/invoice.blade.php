@@ -21,10 +21,11 @@
                 <form action="{{ route('invoice.update', ['id' => $ord->id]) }}" style="margin-right: 10px;" method="POST">
                     @csrf
                     @method('PUT')
-                    <input type="text" value="2" name="status" hidden/>
+                    <input type="text" value="2" name="status" hidden />
                     <button type="submit" class="btn btn-white"><i class="fa fa-ban"></i> Hủy đơn </button>
                 </form>
-                <a href="{{ route('invoice_print', ['id' => $ord->id]) }}" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i>
+                <a href="{{ route('invoice_print', ['id' => $ord->id]) }}" target="_blank" class="btn btn-primary"><i
+                        class="fa fa-print"></i>
                     In hóa đơn </a>
             </div>
         </div>
@@ -109,7 +110,7 @@
                                         <td>
                                             @foreach ($tours as $tour)
                                                 @if ($ord->tour_id == $tour->id)
-                                                    {{ $price = $tour->price; }}
+                                                    {{ $price = $tour->price }}
                                                 @endif
                                             @endforeach
                                         </td>

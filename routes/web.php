@@ -85,6 +85,9 @@ Route::middleware([])->group(function () {
     Route::delete('hotel/{id}',[HotelController::class, 'destroy'])->name('hotel.destroy');
 
     Route::get('income', [IncomeController::class, 'index'])->name('income');
+    Route::post('filter_by_date', [IncomeController::class, 'filter_by_date'])->name('filter_by_date');
+    Route::post('dashboard_filter', [IncomeController::class, 'dashboard_filter'])->name('dashboard_filter');
+    Route::post('thirty_days', [IncomeController::class, 'thirty_days'])->name('thirty_days');
 
     Route::get('location', [LocationController::class, 'index'])->name('location');
     // Route::get('location/create', [LocationController::class, 'create'])->name('location.create');

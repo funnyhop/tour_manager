@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $table='orders';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'tour_id' , 'customer_id', 'status', 'quantity', 'created_at', 'employee_id'];

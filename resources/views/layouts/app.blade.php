@@ -13,7 +13,7 @@
 
     <!-- FooTable -->
     <link href="{{ asset('css/plugins/footable/footable.core.css') }}" rel="stylesheet">
-
+    <!-- iCheck -->
     <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
 
     <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
@@ -45,7 +45,7 @@
             <script src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
 
 
-            <!-- Flot -->
+            {{-- <!-- Flot -->
             <script src="{{ asset('js/plugins/flot/jquery.flot.js') }}"></script>
             <script src="{{ asset('js/plugins/flot/jquery.flot.tooltip.min.js') }}"></script>
             <script src="{{ asset('js/plugins/flot/jquery.flot.spline.js') }}"></script>
@@ -55,7 +55,7 @@
             <script src="{{ asset('js/plugins/flot/jquery.flot.time.js') }}"></script>
 
             <!-- EayPIE -->
-            <script src="{{ asset('js/plugins/easypiechart/jquery.easypiechart.js') }}"></script>
+            <script src="{{ asset('js/plugins/easypiechart/jquery.easypiechart.js') }}"></script> --}}
 
             {{-- <!-- Peity -->
             <script src="js/plugins/peity/jquery.peity.min.js"></script>
@@ -129,7 +129,7 @@
             </script>
 
 
-            <script>
+            {{-- <script>
                 $(document).ready(function() {
                     $('.chart').easyPieChart({
                         barColor: '#f8ac59',
@@ -335,7 +335,7 @@
                         },
                     });
                 });
-            </script>
+            </script> --}}
 
 </body>
 

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Bill extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $table='bills';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'total', 'created_at', 'order_id', 'employee_id'];

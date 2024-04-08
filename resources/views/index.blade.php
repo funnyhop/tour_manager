@@ -55,9 +55,9 @@
                     <div class="col-sm-3">
                         <div class="dashboard-filter form-group">
                             <label class="control-label" for="vehicle_id">Lọc theo</label>
-                            <select name="vehicle_id" id="vehicle_id" class="form-control">
+                            <select name="dashboard_value" id="dashboard_value" class="form-control">
                                 <option selected disabled>---Chọn--------------</option>
-                                <option value="7ngayqua">7 ngày qua</option>
+                                <option value="7ngay">7 ngày qua</option>
                                 <option value="thangnay">Tháng này</option>
                                 <option value="thangtruoc">Tháng trước</option>
                                 <option value="365ngay">365 ngày</option>
@@ -146,6 +146,7 @@
 
     <script>
         $(document).ready(function() {
+        char30daysord();
         $chart = new Morris.Area({
                 element: 'chart',
                 lineColors:  ['#3c8dbc', '#fc8710', '#ff6541'],
@@ -178,19 +179,20 @@
                 })
             }
 
-            $('.dashboard-filter').change(function() {
+            $('.dashboard-filter select').change(function() {
                 var dashboard_value = $(this).val();
                 var _token = $('input[name=_token]').val();
                 $.ajax({
                     url: "{{ route('dashboard_filter') }}",
                     method: "POST",
                     dataType: "JSON",
-                    data: {dashboard_value:dashboard_value, _token:_token},
+                    data: {dashboard_value: dashboard_value, _token: _token},
                     success: function(data) {
-                        $chart.setData(data)
+                        $chart.setData(data);
                     }
-                })
+                });
             });
+
 
 
             $('#btn-dashboard-filter').click(function(event) {

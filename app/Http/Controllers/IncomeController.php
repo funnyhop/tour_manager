@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Bill;
 use App\Models\Order;
 use App\Models\Statistic;
@@ -21,11 +22,85 @@ class IncomeController extends Controller
     public function dashboard_filter(Request $request)
     {
         $data = $request->all();
+        $dauthangnay = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth()->toDateString();
+        $dau_thangtruoc = Carbon::now('Asia/Ho_Chi_Minh')->subMonth()->startOfMonth()->toDateString();
+        $cuoi_thangtruoc = Carbon::now('Asia/Ho_Chi_Minh')->subMonth()->endOfMonth()->toDateString();
+
+        $sub7days = Carbon::now('Asia/Ho_Chi_Minh')->subDays(7)->toDateString();
+        $sub365days = Carbon::now('Asia/Ho_Chi_Minh')->subDays(365)->toDateString();
+        // dd($data);
+        $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+
+        if ($data['dashboard_value'] == '7ngay') {
+            $statistics = Statistic::whereBetween('order_date', ['2024-04-01', '2024-04-08'])
+                ->orderBy('order_date', 'ASC')
+                ->get();
+
+            $orders = Order::whereBetween('created_at', [$sub7days, $now])
+                ->orderBy('created_at', 'ASC')
+                ->get();
+                dd($orders, $statistics);
+        } elseif ($data['dashboard_value'] == 'thangnay') {
+            // dd($dauthangnay, $now);
+            $statistics = Statistic::whereBetween('order_date', [$dauthangnay, $now])
+                ->orderBy('order_date', 'ASC')
+                ->get();
+            $orders = Order::whereBetween('created_at', [$dauthangnay, $now])
+                ->orderBy('created_at', 'ASC')
+                ->get();
+                dd($orders, $statistics);
+        } elseif ($data['dashboard_value'] == 'thangtruoc') {
+            $statistics = Statistic::whereBetween('order_date', [$dau_thangtruoc, $cuoi_thangtruoc])
+                ->orderBy('order_date', 'ASC')
+                ->get();
+
+            $orders = Order::whereBetween('created_at', [$dau_thangtruoc, $cuoi_thangtruoc])
+                ->orderBy('created_at', 'ASC')
+                ->get();
+                dd($orders, $statistics);
+        } elseif ($data['dashboard_value'] == '365ngay') {
+            $statistics = Statistic::whereBetween('order_date', [$sub365days, $now])
+                ->orderBy('order_date', 'ASC')
+                ->get();
+
+            $orders = Order::whereBetween('created_at', [$sub365days, $now])
+                ->orderBy('created_at', 'ASC')
+                ->get();
+                dd($orders, $statistics);
+        }
+
+        $chart_data = [];
+
+        // Loop through the data from the Order table and add it to the chart data array
+        foreach ($orders as $order) {
+            $chart_data[] = [
+                'period' => $order->created_at,
+                'tour' => $order->tour_id,
+                'status' => $order->status,
+                'quantity' => $order->quantity
+            ];
+        }
+
+        // Loop through the data from the Statistic table and add it to the chart data array
+        foreach ($statistics as $statistic) {
+            $chart_data[] = [
+                'period' => $statistic->order_date,
+                'order' => $statistic->total_order,
+                'sales' => $statistic->sales,
+                'profit' => $statistic->profit,
+                'quantity' => $statistic->quantity
+            ];
+        }
+
+        // Trả về dữ liệu dưới dạng JSON
+        return response()->json($chart_data);
+
     }
+
 
     public function thirty_days(Request $request)
     {
-        //
+        $data = $request->all();
     }
 
     public function filter_by_date(Request $request)
@@ -41,7 +116,6 @@ class IncomeController extends Controller
         // Truy vấn dữ liệu từ bảng Statistic
         $statistics = Statistic::whereBetween('order_date', [$from_date, $to_date])
                             ->orderBy('order_date','ASC')->get();
-
         // Khởi tạo mảng dữ liệu cho biểu đồ
         $chart_data = [];
 
@@ -73,15 +147,21 @@ class IncomeController extends Controller
 
     private function formatDate($date)
     {
-        // Kiểm tra xem ngày tháng có đúng định dạng '%m/%d/%Y' hay không
-        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) {
-            // Nếu đúng định dạng, chuyển đổi thành định dạng 'Y-m-d'
-            return date('Y-m-d', strtotime(str_replace('/', '-', $date)));
+        // Kiểm tra xem ngày tháng có đúng định dạng 'Y-m-d' hay không
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+            // Nếu đúng định dạng 'Y-m-d', không cần chuyển đổi
+            return $date;
+        } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) {
+            // Nếu đúng định dạng '%m/%d/%Y', chuyển đổi thành định dạng 'Y-m-d'
+            return date('Y-m-d', strtotime($date));
         } else {
             // Ngược lại, giữ nguyên giá trị của ngày tháng
-            return $date;
+            return null; // hoặc bạn có thể trả về một giá trị mặc định khác tùy thuộc vào logic của bạn
         }
     }
+
+
+
 
 
     /**

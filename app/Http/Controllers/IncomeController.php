@@ -32,40 +32,58 @@ class IncomeController extends Controller
         $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
 
         if ($data['dashboard_value'] == '7ngay') {
-            $statistics = Statistic::whereBetween('order_date', ['2024-04-01', '2024-04-08'])
-                ->orderBy('order_date', 'ASC')
-                ->get();
-
             $orders = Order::whereBetween('order_date', [$sub7days, $now])
                 ->orderBy('order_date', 'ASC')
                 ->get();
+
+            $bills = Bill::whereBetween('bill_date', [$sub7days, $now])
+                ->orderBy('bill_date', 'ASC')
+                ->get();
+
+            // $statistics = Statistic::whereBetween('order_date', [$sub7days, $now])
+            //         ->orderBy('order_date', 'ASC')
+            //         ->get();
+
                 // dd($orders, $statistics);
         } elseif ($data['dashboard_value'] == 'thangnay') {
             // dd($dauthangnay, $now);
-            $statistics = Statistic::whereBetween('order_date', [$dauthangnay, $now])
-                ->orderBy('order_date', 'ASC')
-                ->get();
             $orders = Order::whereBetween('order_date', [$dauthangnay, $now])
                 ->orderBy('order_date', 'ASC')
                 ->get();
-                // dd($orders, $statistics);
-        } elseif ($data['dashboard_value'] == 'thangtruoc') {
-            $statistics = Statistic::whereBetween('order_date', [$dau_thangtruoc, $cuoi_thangtruoc])
-                ->orderBy('order_date', 'ASC')
+
+            $bills = Bill::whereBetween('bill_date', [$dauthangnay, $now])
+                ->orderBy('bill_date', 'ASC')
                 ->get();
 
+            // $statistics = Statistic::whereBetween('order_date', [$dauthangnay, $now])
+            //     ->orderBy('order_date', 'ASC')
+            //     ->get();
+                // dd($orders, $statistics);
+        } elseif ($data['dashboard_value'] == 'thangtruoc') {
             $orders = Order::whereBetween('order_date', [$dau_thangtruoc, $cuoi_thangtruoc])
                 ->orderBy('order_date', 'ASC')
                 ->get();
-                // dd($orders, $statistics);
-        } elseif ($data['dashboard_value'] == '365ngay') {
-            $statistics = Statistic::whereBetween('order_date', [$sub365days, $now])
-                ->orderBy('order_date', 'ASC')
+
+            $bills = Bill::whereBetween('bill_date', [$dau_thangtruoc, $cuoi_thangtruoc])
+                ->orderBy('bill_date', 'ASC')
                 ->get();
 
+            // $statistics = Statistic::whereBetween('order_date', [$dau_thangtruoc, $cuoi_thangtruoc])
+            //     ->orderBy('order_date', 'ASC')
+            //     ->get();
+                // dd($orders, $statistics);
+        } elseif ($data['dashboard_value'] == '365ngay') {
             $orders = Order::whereBetween('order_date', [$sub365days, $now])
                 ->orderBy('order_date', 'ASC')
                 ->get();
+
+            $bills = Bill::whereBetween('bill_date', [$sub365days, $now])
+                ->orderBy('bill_date', 'ASC')
+                ->get();
+
+            // $statistics = Statistic::whereBetween('order_date', [$sub365days, $now])
+            //     ->orderBy('order_date', 'ASC')
+            //     ->get();
                 // dd($orders, $statistics);
         }
 
@@ -81,16 +99,23 @@ class IncomeController extends Controller
             ];
         }
 
-        // Loop through the data from the Statistic table and add it to the chart data array
-        foreach ($statistics as $statistic) {
+        foreach ($bills as $bill) {
             $chart_data[] = [
-                'period' => $statistic->order_date,
-                'order' => $statistic->total_order,
-                'sales' => $statistic->sales,
-                'profit' => $statistic->profit,
-                'quantity' => $statistic->quantity
+                'period' => $bill->bill_date,
+                'total' => $bill->total,
             ];
         }
+
+        // Loop through the data from the Statistic table and add it to the chart data array
+        // foreach ($statistics as $statistic) {
+        //     $chart_data[] = [
+        //         'period' => $statistic->order_date,
+        //         'order' => $statistic->total_order,
+        //         'sales' => $statistic->sales,
+        //         'profit' => $statistic->profit,
+        //         'quantity' => $statistic->quantity
+        //     ];
+        // }
 
         // Trả về dữ liệu dưới dạng JSON
         return response()->json($chart_data);
@@ -108,15 +133,19 @@ class IncomeController extends Controller
         // Lấy ngày 30 ngày trước và định dạng lại nó
         $thirty_days_ago = Carbon::now('Asia/Ho_Chi_Minh')->subDays(30)->toDateString();
 
-        // Truy vấn dữ liệu từ bảng Statistic trong khoảng 30 ngày gần đây
-        $statistics = Statistic::whereBetween('order_date', [$thirty_days_ago, $now])
-                                ->orderBy('order_date', 'ASC')
-                                ->get();
-
         // Truy vấn dữ liệu từ bảng Order trong khoảng 30 ngày gần đây
         $orders = Order::whereBetween('order_date', [$thirty_days_ago, $now])
                         ->orderBy('order_date', 'ASC')
                         ->get();
+
+        $bills = Bill::whereBetween('bill_date', [$thirty_days_ago, $now])
+                        ->orderBy('bill_date', 'ASC')
+                        ->get();
+
+        // // Truy vấn dữ liệu từ bảng Statistic trong khoảng 30 ngày gần đây
+        // $statistics = Statistic::whereBetween('order_date', [$thirty_days_ago, $now])
+        //                         ->orderBy('order_date', 'ASC')
+        //                         ->get();
 
         // Khởi tạo mảng dữ liệu cho biểu đồ
         $chart_data = [];
@@ -131,16 +160,23 @@ class IncomeController extends Controller
             ];
         }
 
-        // Loop qua dữ liệu từ bảng Statistic và thêm vào mảng dữ liệu cho biểu đồ
-        foreach ($statistics as $statistic) {
+        foreach ($bills as $bill) {
             $chart_data[] = [
-                'period' => $statistic->order_date,
-                'order' => $statistic->total_order,
-                'sales' => $statistic->sales,
-                'profit' => $statistic->profit,
-                'quantity' => $statistic->quantity
+                'period' => $bill->bill_date,
+                'total' => $bill->total,
             ];
         }
+
+        // // Loop qua dữ liệu từ bảng Statistic và thêm vào mảng dữ liệu cho biểu đồ
+        // foreach ($statistics as $statistic) {
+        //     $chart_data[] = [
+        //         'period' => $statistic->order_date,
+        //         'order' => $statistic->total_order,
+        //         'sales' => $statistic->sales,
+        //         'profit' => $statistic->profit,
+        //         'quantity' => $statistic->quantity
+        //     ];
+        // }
 
         // Trả về dữ liệu dưới dạng JSON
         return response()->json($chart_data);
@@ -157,9 +193,15 @@ class IncomeController extends Controller
         $orders = Order::whereBetween('order_date', [$from_date, $to_date])
                     ->orderBy('order_date','ASC')->get();
 
+        $bills = Bill::whereBetween('bill_date', [$from_date, $to_date])
+                    ->orderBy('bill_date', 'ASC')
+                    ->get();
+
         // Truy vấn dữ liệu từ bảng Statistic
-        $statistics = Statistic::whereBetween('order_date', [$from_date, $to_date])
-                            ->orderBy('order_date','ASC')->get();
+        // $statistics = Statistic::whereBetween('order_date', [$from_date, $to_date])
+        //                     ->orderBy('order_date','ASC')
+        //                     ->get();
+
         // Khởi tạo mảng dữ liệu cho biểu đồ
         $chart_data = [];
 
@@ -173,16 +215,23 @@ class IncomeController extends Controller
             ];
         }
 
-        // Lặp qua dữ liệu từ bảng Statistic và thêm vào mảng dữ liệu cho biểu đồ
-        foreach ($statistics as $statistic) {
+        foreach ($bills as $bill) {
             $chart_data[] = [
-                'period' => $statistic->order_date,
-                'order' => $statistic->total_order,
-                'sales' => $statistic->sales,
-                'profit' => $statistic->profit,
-                'quantity' => $statistic->quantity
+                'period' => $bill->bill_date,
+                'total' => $bill->total,
             ];
         }
+
+        // Lặp qua dữ liệu từ bảng Statistic và thêm vào mảng dữ liệu cho biểu đồ
+        // foreach ($statistics as $statistic) {
+        //     $chart_data[] = [
+        //         'period' => $statistic->order_date,
+        //         'order' => $statistic->total_order,
+        //         'sales' => $statistic->sales,
+        //         'profit' => $statistic->profit,
+        //         'quantity' => $statistic->quantity
+        //     ];
+        // }
 
         // Trả về dữ liệu dưới dạng JSON
         return response()->json($chart_data);

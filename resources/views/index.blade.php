@@ -149,7 +149,7 @@
         char30daysord();
         $chart = new Morris.Area({
                 element: 'chart',
-                lineColors:  ['#3c8dbc', '#fc8710', '#ff6541'],
+                lineColors:  ['#00ADAA', '#FFC736', '#FF6345', '#474243'],
                 hideHover: 'true', // Whether or not the series are hidden on hover
                 pointFillColors: ['#ffffff'], //Point fill color
                 pointStrokeColors: ['black'],// Point stroke color
@@ -159,11 +159,11 @@
                 // The name of the data record attribute that contains x-values.
                 xkey: 'period',
                 // A list of names of data record attributes that contain y-values.
-                ykeys: ['tour_id', 'status', 'quantity'],
+                ykeys: ['total', 'tour', 'status', 'quantity'],
                 // Labels for the ykeys -- will be displayed when you hover over the
                 // chart.
                 // behaveLikeLine: true,
-                labels: ['Tours', 'Status', 'Quantity']
+                labels: ['Total', 'Tour', 'Status', 'Quantity']
             });
 
             function char30daysord(){
@@ -216,68 +216,4 @@
             });
         });
     </script>
-    {{-- <script>
-        $(document).ready(function() {
-            // Sử dụng AJAX để gọi tuyến đường '/get-chart-data'
-            $.ajax({
-                url: "{{ route('getChartData') }}",
-                method: 'GET',
-                success: function(response) {
-                    // Lấy dữ liệu từ response
-                    var ordersData = response.ordersData;
-                    var billsData = response.billsData;
-
-                    // Xử lý dữ liệu biểu đồ
-                    var data = [{
-                            label: "Số đơn được thanh toán",
-                            data: ordersData.map(function(item) {
-                                return [new Date(item.created_at).getTime(), item.quantity];
-                            }),
-                            color: "#1ab394"
-                        },
-                        {
-                            label: "Số đơn hủy",
-                            data: billsData.map(function(item) {
-                                return [new Date(item.created_at).getTime(), parseFloat(item.total)];
-                            }),
-                            color: "#1C84C6"
-                        }
-                    ];
-
-                    // Tùy chọn của biểu đồ
-                    var options = {
-                        series: {
-                            lines: {
-                                show: true
-                            },
-                            points: {
-                                show: true
-                            }
-                        },
-                        grid: {
-                            hoverable: true,
-                            clickable: true
-                        },
-                        xaxis: {
-                            mode: "time",
-                            timeformat: "%Y-%m-%d"
-                        },
-                        yaxis: {
-                            ticks: 10,
-                            tickFormatter: function(v) {
-                                return v + " Đơn";
-                            }
-                        },
-                        tooltip: true,
-                        tooltipOpts: {
-                            content: "%s: %y Đơn"
-                        }
-                    };
-
-                    // Vẽ biểu đồ
-                    $.plot($("#flot-dashboard-chart"), data, options);
-                }
-            });
-        });
-    </script> --}}
 @endsection

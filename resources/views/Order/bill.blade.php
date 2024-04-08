@@ -48,7 +48,7 @@
                                             {{ $item->order_id }}
                                         </td>
                                         <td>
-                                            {{ $item->created_at }}
+                                            {{ $item->bill_date }}
                                         </td>
                                         <td>
                                             {{ $item->total }} VND
@@ -64,7 +64,7 @@
                                             <a href="{{ route('bill_detail', ['id' => $item->id]) }}"
                                                 class=" btn-warning btn btn-xs"><i class="fa fa-eye"
                                                     aria-hidden="true"></i></a>
-                                            <a href="{{ route('bill_print', ['id' => $item->id]) }}"
+                                            <a href="{{ route('bill_print', ['id' => $item->id]) }}" target="_blank"
                                                 class="btn-primary btn btn-xs"><i class="fa fa-print"
                                                     aria-hidden="true"></i></a>
                                         </td>

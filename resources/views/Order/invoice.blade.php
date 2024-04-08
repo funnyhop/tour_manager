@@ -82,7 +82,7 @@
                                 </address>
                                 <p>
                                     <span><strong>Ngày lập:</strong> {{ $now }}</span><br />
-                                    <input type="text" name="created_at" value="{{ $now }}" hidden />
+                                    <input type="text" name="bill_date" value="{{ $now }}" hidden />
                                 </p>
                             </div>
                         </div>

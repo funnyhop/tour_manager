@@ -67,6 +67,7 @@
                             <option value="1">Đã thanh toán</option>
                             <option value="2">Hủy đơn</option>
                         </select> --}}
+                        <input type="text" name="order_date" value="{{ $now }}" hidden />
                     </div>
                 </div>
                 <div class="col-sm-3" hidden>
@@ -122,7 +123,7 @@
                                             {{ $item->quantity }}
                                         </td>
                                         <td>
-                                            {{ $item->created_at }}
+                                            {{ $item->order_date }}
                                         </td>
                                         <td>
                                             @if ($item->status == 0)

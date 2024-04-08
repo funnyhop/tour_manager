@@ -36,37 +36,37 @@ class IncomeController extends Controller
                 ->orderBy('order_date', 'ASC')
                 ->get();
 
-            $orders = Order::whereBetween('created_at', [$sub7days, $now])
-                ->orderBy('created_at', 'ASC')
+            $orders = Order::whereBetween('order_date', [$sub7days, $now])
+                ->orderBy('order_date', 'ASC')
                 ->get();
-                dd($orders, $statistics);
+                // dd($orders, $statistics);
         } elseif ($data['dashboard_value'] == 'thangnay') {
             // dd($dauthangnay, $now);
             $statistics = Statistic::whereBetween('order_date', [$dauthangnay, $now])
                 ->orderBy('order_date', 'ASC')
                 ->get();
-            $orders = Order::whereBetween('created_at', [$dauthangnay, $now])
-                ->orderBy('created_at', 'ASC')
+            $orders = Order::whereBetween('order_date', [$dauthangnay, $now])
+                ->orderBy('order_date', 'ASC')
                 ->get();
-                dd($orders, $statistics);
+                // dd($orders, $statistics);
         } elseif ($data['dashboard_value'] == 'thangtruoc') {
             $statistics = Statistic::whereBetween('order_date', [$dau_thangtruoc, $cuoi_thangtruoc])
                 ->orderBy('order_date', 'ASC')
                 ->get();
 
-            $orders = Order::whereBetween('created_at', [$dau_thangtruoc, $cuoi_thangtruoc])
-                ->orderBy('created_at', 'ASC')
+            $orders = Order::whereBetween('order_date', [$dau_thangtruoc, $cuoi_thangtruoc])
+                ->orderBy('order_date', 'ASC')
                 ->get();
-                dd($orders, $statistics);
+                // dd($orders, $statistics);
         } elseif ($data['dashboard_value'] == '365ngay') {
             $statistics = Statistic::whereBetween('order_date', [$sub365days, $now])
                 ->orderBy('order_date', 'ASC')
                 ->get();
 
-            $orders = Order::whereBetween('created_at', [$sub365days, $now])
-                ->orderBy('created_at', 'ASC')
+            $orders = Order::whereBetween('order_date', [$sub365days, $now])
+                ->orderBy('order_date', 'ASC')
                 ->get();
-                dd($orders, $statistics);
+                // dd($orders, $statistics);
         }
 
         $chart_data = [];
@@ -74,7 +74,7 @@ class IncomeController extends Controller
         // Loop through the data from the Order table and add it to the chart data array
         foreach ($orders as $order) {
             $chart_data[] = [
-                'period' => $order->created_at,
+                'period' => $order->order_date,
                 'tour' => $order->tour_id,
                 'status' => $order->status,
                 'quantity' => $order->quantity
@@ -101,7 +101,51 @@ class IncomeController extends Controller
     public function thirty_days(Request $request)
     {
         $data = $request->all();
+
+        // Lấy ngày hiện tại và định dạng lại nó
+        $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+
+        // Lấy ngày 30 ngày trước và định dạng lại nó
+        $thirty_days_ago = Carbon::now('Asia/Ho_Chi_Minh')->subDays(30)->toDateString();
+
+        // Truy vấn dữ liệu từ bảng Statistic trong khoảng 30 ngày gần đây
+        $statistics = Statistic::whereBetween('order_date', [$thirty_days_ago, $now])
+                                ->orderBy('order_date', 'ASC')
+                                ->get();
+
+        // Truy vấn dữ liệu từ bảng Order trong khoảng 30 ngày gần đây
+        $orders = Order::whereBetween('order_date', [$thirty_days_ago, $now])
+                        ->orderBy('order_date', 'ASC')
+                        ->get();
+
+        // Khởi tạo mảng dữ liệu cho biểu đồ
+        $chart_data = [];
+
+        // Loop qua dữ liệu từ bảng Order và thêm vào mảng dữ liệu cho biểu đồ
+        foreach ($orders as $order) {
+            $chart_data[] = [
+                'period' => $order->order_date,
+                'tour' => $order->tour_id,
+                'status' => $order->status,
+                'quantity' => $order->quantity
+            ];
+        }
+
+        // Loop qua dữ liệu từ bảng Statistic và thêm vào mảng dữ liệu cho biểu đồ
+        foreach ($statistics as $statistic) {
+            $chart_data[] = [
+                'period' => $statistic->order_date,
+                'order' => $statistic->total_order,
+                'sales' => $statistic->sales,
+                'profit' => $statistic->profit,
+                'quantity' => $statistic->quantity
+            ];
+        }
+
+        // Trả về dữ liệu dưới dạng JSON
+        return response()->json($chart_data);
     }
+
 
     public function filter_by_date(Request $request)
     {
@@ -110,8 +154,8 @@ class IncomeController extends Controller
         $to_date = $this->formatDate($request->input('to_date'));
 
         // Truy vấn dữ liệu từ bảng Order
-        $orders = Order::whereBetween('created_at', [$from_date, $to_date])
-                    ->orderBy('created_at','ASC')->get();
+        $orders = Order::whereBetween('order_date', [$from_date, $to_date])
+                    ->orderBy('order_date','ASC')->get();
 
         // Truy vấn dữ liệu từ bảng Statistic
         $statistics = Statistic::whereBetween('order_date', [$from_date, $to_date])
@@ -122,7 +166,7 @@ class IncomeController extends Controller
         // Lặp qua dữ liệu từ bảng Order và thêm vào mảng dữ liệu cho biểu đồ
         foreach ($orders as $order) {
             $chart_data[] = [
-                'period' => $order->created_at,
+                'period' => $order->order_date,
                 'tour' => $order->tour_id,
                 'status' => $order->status,
                 'quantity' => $order->quantity

@@ -12,12 +12,12 @@ class Bill extends Model
     public $timestamps = false;
     protected $table='bills';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'total', 'created_at', 'order_id', 'employee_id'];
+    protected $fillable = ['id', 'total', 'bill_date', 'order_id', 'employee_id'];
     // protected $keyType = 'integer';
     // protected $keyType = 'string';
 
     public function bills(){
-        $bills = DB::table('bills')->select('id', 'total', 'created_at', 'order_id', 'employee_id')->get();
+        $bills = DB::table('bills')->select('id', 'total', 'bill_date', 'order_id', 'employee_id')->get();
         return $bills;
     }
 }

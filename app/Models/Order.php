@@ -12,7 +12,7 @@ class Order extends Model
     public $timestamps = false;
     protected $table='orders';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'tour_id' , 'customer_id', 'status', 'quantity', 'created_at', 'employee_id'];
+    protected $fillable = ['id', 'tour_id' , 'customer_id', 'status', 'quantity', 'order_date', 'employee_id'];
     protected $attributes = [
         'status' => 0, // Thiết lập giá trị mặc định cho cột 'status' là 0
     ];
@@ -20,12 +20,12 @@ class Order extends Model
     // protected $keyType = 'string';
 
     // public function orders(){
-    //     $orders = DB::table('orders')->select('id', 'tour_id' , 'customer_id', 'status', 'quantity', 'created_at', 'employee_id')->get();
+    //     $orders = DB::table('orders')->select('id', 'tour_id' , 'customer_id', 'status', 'quantity', 'order_date', 'employee_id')->get();
     //     return $orders;
     // }
     public function orders()
     {
-        return Order::select('id', 'tour_id', 'customer_id', 'status', 'quantity', 'created_at', 'employee_id')->get();
+        return Order::select('id', 'tour_id', 'customer_id', 'status', 'quantity', 'order_date', 'employee_id')->get();
     }
 
 }

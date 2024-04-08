@@ -18,11 +18,13 @@ class OrderController extends Controller
     }
     public function index()
     {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $now = date("Y-m-d");
         $list = $this->order->orders();
         $customers = DB::table('customers')->get()->all();
         $tours = DB::table('tours')->get()->all();
         $employees = DB::table('employees')->get()->all();
-        return view('Order.order', compact('list', 'customers','tours', 'employees'));
+        return view('Order.order', compact('list', 'customers','tours', 'employees', 'now'));
     }
 
     /**
@@ -50,6 +52,7 @@ class OrderController extends Controller
             'quantity' => $request->input('quantity'),
             'status' => $request->input('status'),
             'employee_id' => $request->input('employee_id'),
+            'order_date' => $request->input('order_date'),
         ]);
 
         $order->save();
@@ -70,7 +73,7 @@ class OrderController extends Controller
     {
         $customers = DB::table('customers')->get()->all();
         $tours = DB::table('tours')->get()->all();
-        $order = DB::table('orders')->select('id', 'tour_id' , 'customer_id', 'quantity', 'status', 'created_at', 'employee_id')->where('id', $id)->first();
+        $order = DB::table('orders')->select('id', 'tour_id' , 'customer_id', 'quantity', 'status', 'order_date', 'employee_id')->where('id', $id)->first();
         return view('Order.order_edit', [
             'order'=>$order,
             'customers' => $customers,
@@ -96,6 +99,8 @@ class OrderController extends Controller
                 'quantity' => $request->input('quantity'),
                 'status' => $request->input('status'),
                 'employee_id' => $request->input('employee_id'),
+                'order_date' => $request->input('order_date'),
+
             ]);
         return redirect()->route('order');
     }

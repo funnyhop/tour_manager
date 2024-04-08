@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreign('customer_id' )->references('id') ->on('customers');
             $table->unsignedBigInteger('employee_id')->nullable()->default(NULL);
             $table->foreign('employee_id' )->references('id')->on('employees');
+            $table->date( 'order_date' );
             $table->timestamps();//ngay dat
         });
     }

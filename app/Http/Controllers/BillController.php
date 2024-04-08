@@ -42,7 +42,7 @@ class BillController extends Controller
     {
         $i=0;
         date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $now = date("Y-m-d H:i:s");
+        $now = date("Y-m-d");
         $ord = DB::table('orders')
         ->where('id', $id)
         ->first();
@@ -83,7 +83,7 @@ class BillController extends Controller
             'total' => $request->input('total'),
             'employee_id' => $request->input('employee_id'),
             'order_id' => $request->input('order_id'),
-            'created_at' => $request->input('created_at'),
+            'bill_date' => $request->input('bill_date'),
         ]);
         $bill->save();
 

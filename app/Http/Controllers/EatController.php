@@ -45,8 +45,8 @@ class EatController extends Controller
             'date_of_tour' => 'required',
         ]);
 
-        // $date_of_tour = $this->formatDate($request->input('date_of_tour'));
-        $date_of_tour = $request->input('date_of_tour');
+        $date_of_tour = $this->formatDate($request->input('date_of_tour'));
+        // $date_of_tour = $request->input('date_of_tour');
 
         $eat = DB::table('eats')->insert([
             'date_of_tour' => $date_of_tour,
@@ -60,13 +60,16 @@ class EatController extends Controller
 
     private function formatDate($date)
     {
-        // Kiểm tra xem ngày tháng có đúng định dạng '%m/%d/%Y' hay không
-        if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) {
-            // Nếu đúng định dạng, chuyển đổi thành định dạng 'Y-m-d'
-            return date('Y-m-d', strtotime(str_replace('/', '-', $date)));
+        // Kiểm tra xem ngày tháng có đúng định dạng 'Y-m-d' hay không
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+            // Nếu đúng định dạng 'Y-m-d', không cần chuyển đổi
+            return $date;
+        } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date)) {
+            // Nếu đúng định dạng '%m/%d/%Y', chuyển đổi thành định dạng 'Y-m-d'
+            return date('Y-m-d', strtotime($date));
         } else {
             // Ngược lại, giữ nguyên giá trị của ngày tháng
-            return $date;
+            return null; // hoặc bạn có thể trả về một giá trị mặc định khác tùy thuộc vào logic của bạn
         }
     }
     /**

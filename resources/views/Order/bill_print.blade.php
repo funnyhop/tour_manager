@@ -68,7 +68,7 @@
                         @endforeach
                     </address>
                     <p>
-                        <span><strong>Ngày lập:</strong>{{ $bill->created_at }}</span><br />
+                        <span><strong>Ngày lập:</strong>{{ $bill->bill_date }}</span><br />
                     </p>
                 </div>
             </div>

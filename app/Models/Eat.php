@@ -16,7 +16,9 @@ class Eat extends Model
     // protected $keyType = 'string';
 
     public function eats(){
-        $eats = DB::table('eats')->select('tour_id', 'location_id', 'restaurant_id', 'date_of_tour')->get();
+        $eats = DB::table('eats')->select('tour_id', 'location_id', 'restaurant_id', 'date_of_tour')
+            ->orderByDesc('tour_id')
+            ->get();
         return $eats;
     }
 }

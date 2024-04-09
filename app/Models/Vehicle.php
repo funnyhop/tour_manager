@@ -16,7 +16,9 @@ class Vehicle extends Model
     // protected $keyType = 'string';
 
     public function vehicles(){
-        $vehicles = DB::table('vehicles')->select('id', 'name', 'type')->get();
+        $vehicles = DB::table('vehicles')->select('id', 'name', 'type')
+            ->orderByDesc('id')
+            ->get();
         return $vehicles;
     }
 }

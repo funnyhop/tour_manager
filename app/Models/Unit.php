@@ -16,7 +16,9 @@ class Unit extends Model
     // protected $keyType = 'string';
 
     public function units(){
-        $units = DB::table('units')->select('id', 'name', 'phone', 'fax', 'thue')->get();
+        $units = DB::table('units')->select('id', 'name', 'phone', 'fax', 'thue')
+            ->orderByDesc('id')
+            ->get();
         return $units;
     }
     //$key is name="key" trong input type search

@@ -25,7 +25,9 @@ class Order extends Model
     // }
     public function orders()
     {
-        return Order::select('id', 'tour_id', 'customer_id', 'status', 'quantity', 'order_date', 'employee_id')->get();
+        // return Order::orderByDesc('id')->get();
+        return Order::select('id', 'tour_id', 'customer_id', 'status', 'quantity', 'order_date', 'employee_id')
+            ->orderByDesc('id')->get();
     }
 
 }

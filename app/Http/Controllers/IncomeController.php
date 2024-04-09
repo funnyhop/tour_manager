@@ -7,6 +7,7 @@ use App\Models\Bill;
 use App\Models\Order;
 use App\Models\Statistic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class IncomeController extends Controller
@@ -14,9 +15,82 @@ class IncomeController extends Controller
     /**
      * Display a listing of the resource.
      */
+    protected $bill;
+    public function __construct(){
+        $this->bill = new Bill();
+    }
+
     public function index()
     {
-        return view('index');
+        // Tính doanh thu của tháng hiện tại
+        $month_income = DB::table('bills')
+            ->select(DB::raw('SUM(total) as revenue'))
+            ->whereMonth('bill_date', '=', date('m'))
+            ->whereYear('bill_date', '=', date('Y'))
+            ->first();
+
+        // Tính doanh thu của tháng trước
+        $lastMonthIncome = DB::table('bills')
+            ->select(DB::raw('SUM(total) as revenue'))
+            ->whereMonth('bill_date', '=', date('m', strtotime('-1 month')))
+            ->whereYear('bill_date', '=', date('Y', strtotime('-1 month')))
+            ->first();
+
+        // Số lượng đơn hàng của ngày hôm trước
+        $order_quantity_yesterday = DB::table('orders')
+            ->whereDate('order_date', '=', date('Y-m-d', strtotime('-1 day')))
+            ->count();
+
+        // Số lượng đơn hàng của ngày hôm nay
+        $order_quantity_today = DB::table('orders')
+            ->whereDate('order_date', '=', date('Y-m-d'))
+            ->count();
+
+
+        // Số lượng khách hàng mới của tháng hiện tại
+        $cus_news_month = DB::table('customers')
+            ->whereMonth('created_at', '=', date('m'))
+            ->whereYear('created_at', '=', date('Y'))
+            ->count();
+
+        // Số lượng khách hàng mới của tháng trước
+        $cus_last_month = DB::table('customers')
+            ->whereMonth('created_at', '=', date('m', strtotime('-1 month')))
+            ->whereYear('created_at', '=', date('Y', strtotime('-1 month')))
+            ->count();
+
+        // Tổng số đơn hàng trong tháng hiện tại
+        $order_total_month = DB::table('orders')
+            ->whereMonth('order_date', '=', date('m'))
+            ->whereYear('order_date', '=', date('Y'))
+            ->count();
+
+        // Số đơn hàng đã thanh toán trong tháng hiện tại
+        $paid_order = DB::table('orders')
+            ->whereMonth('order_date', '=', date('m'))
+            ->whereYear('order_date', '=', date('Y'))
+            ->where('status', '1')
+            ->count();
+
+        // Số đơn hàng bị hủy trong tháng hiện tại
+        $canceled_order = DB::table('orders')
+            ->whereMonth('order_date', '=', date('m'))
+            ->whereYear('order_date', '=', date('Y'))
+            ->where('status', '2')
+            ->count();
+
+        // Số đơn hàng đang chờ xử lý trong tháng hiện tại
+        $pending_order = DB::table('orders')
+            ->whereMonth('order_date', '=', date('m'))
+            ->whereYear('order_date', '=', date('Y'))
+            ->where('status', '0')
+            ->count();
+
+
+        // dd($pending_order, $canceled_order, $paid_order);
+        return view('index', compact( 'month_income', 'order_quantity_today',
+         'cus_news_month','paid_order', 'order_total_month', 'canceled_order',
+          'pending_order', 'lastMonthIncome', 'cus_last_month', 'order_quantity_yesterday'));
     }
 
     public function dashboard_filter(Request $request)

@@ -16,7 +16,9 @@ class Hotel extends Model
     // protected $keyType = 'string';
 
     public function hotels(){
-        $hotels = DB::table('hotels')->select('id', 'name', 'description')->get();
+        $hotels = DB::table('hotels')->select('id', 'name', 'description')
+            ->orderByDesc('id')
+            ->get();
         return $hotels;
     }
 }

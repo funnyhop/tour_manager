@@ -16,7 +16,9 @@ class Location extends Model
     // protected $keyType = 'string';
 
     public function locations(){
-        $locations = DB::table('locations')->select('id', 'name' , 'service', 'price')->get();
+        $locations = DB::table('locations')->select('id', 'name' , 'service', 'price')
+            ->orderByDesc('id')
+            ->get();
         return $locations;
     }
 }

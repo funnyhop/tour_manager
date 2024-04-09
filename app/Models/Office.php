@@ -16,7 +16,9 @@ class Office extends Model
     // protected $keyType = 'string';
 
     public function offices(){
-        $offices = DB::table('offices')->select('id', 'name')->get();
+        $offices = DB::table('offices')->select('id', 'name')
+            ->orderByDesc('id')
+            ->get();
         return $offices;
     }
 }

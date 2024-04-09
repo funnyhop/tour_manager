@@ -16,7 +16,9 @@ class Tour extends Model
     // protected $keyType = 'string';
 
     public function tours(){
-        $tours = DB::table('tours')->select('id', 'name' , 'description', 'start_time', 'end_time', 'start_date', 'end_date', 'image', 'outstanding', 'price')->get();
+        $tours = DB::table('tours')->select('id', 'name' , 'description', 'start_time', 'end_time', 'start_date', 'end_date', 'image', 'outstanding', 'price')
+            ->orderByDesc('id')
+            ->get();
         return $tours;
     }
 }

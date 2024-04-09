@@ -16,7 +16,9 @@ class Employee extends Model
     // protected $keyType = 'string';
 
     public function employees(){
-        $employees = DB::table('employees')->select('id', 'name', 'phone', 'gender', 'address', 'birthday', 'email', 'password', 'unit_id', 'role')->get();
+        $employees = DB::table('employees')->select('id', 'name', 'phone', 'gender', 'address', 'birthday', 'email', 'password', 'unit_id', 'role')
+            ->orderByDesc('id')
+            ->get();
         return $employees;
     }
 }

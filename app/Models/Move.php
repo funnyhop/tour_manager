@@ -16,7 +16,9 @@ class Move extends Model
     // protected $keyType = 'string';
 
     public function moves(){
-        $moves = DB::table('moves')->select('tour_id', 'location_id', 'vehicle_id', 'date_of_tour')->get();
+        $moves = DB::table('moves')->select('tour_id', 'location_id', 'vehicle_id', 'date_of_tour')
+            ->orderByDesc('tour_id')
+            ->get();
         return $moves;
     }
 }

@@ -16,7 +16,9 @@ class Opject extends Model
     // protected $keyType = 'string';
 
     public function opjects(){
-        $opjects = DB::table('opjects')->select('id', 'type')->get();
+        $opjects = DB::table('opjects')->select('id', 'type')
+            ->orderByDesc('id')
+            ->get();
         return $opjects;
     }
 }

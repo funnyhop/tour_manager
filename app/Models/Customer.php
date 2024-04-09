@@ -11,12 +11,14 @@ class Customer extends Model
     use HasFactory;
     protected $table='customers';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'name', 'phone', 'gender', 'address', 'birthday', 'email', 'password', 'opject_id'];
+    protected $fillable = ['id', 'name', 'phone', 'gender', 'address', 'birthday', 'email', 'password', 'opject_id', 'created_at'];
     // protected $keyType = 'integer';
     // protected $keyType = 'string';
 
     public function customers(){
-        $customers = DB::table('customers')->select('id', 'name', 'phone', 'gender', 'address', 'birthday', 'email', 'password', 'opject_id')->get();
+        $customers = DB::table('customers')->select('id', 'name', 'phone', 'gender', 'address', 'birthday', 'email', 'password', 'opject_id', 'created_at')
+            ->orderByDesc('id')
+            ->get();
         return $customers;
     }
 }

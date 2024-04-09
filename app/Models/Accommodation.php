@@ -16,7 +16,9 @@ class Accommodation extends Model
     // protected $keyType = 'string';
 
     public function accommodations(){
-        $accommodations = DB::table('accommodations')->select('tour_id', 'location_id', 'hotel_id', 'date_of_tour')->get();
+        $accommodations = DB::table('accommodations')->select('tour_id', 'location_id', 'hotel_id', 'date_of_tour')
+            ->orderByDesc('tour_id')
+            ->get();
         return $accommodations;
     }
 }

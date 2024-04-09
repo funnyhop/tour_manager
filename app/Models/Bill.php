@@ -17,7 +17,10 @@ class Bill extends Model
     // protected $keyType = 'string';
 
     public function bills(){
-        $bills = DB::table('bills')->select('id', 'total', 'bill_date', 'order_id', 'employee_id')->get();
+        $bills = DB::table('bills')->select('id', 'total', 'bill_date', 'order_id', 'employee_id')
+            ->orderByDesc('order_id')
+            ->get();
         return $bills;
     }
+
 }

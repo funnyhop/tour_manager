@@ -16,7 +16,9 @@ class Restaurant extends Model
     // protected $keyType = 'string';
 
     public function restaurants(){
-        $restaurants = DB::table('restaurants')->select('id', 'name', 'description')->get();
+        $restaurants = DB::table('restaurants')->select('id', 'name', 'description')
+            ->orderByDesc('id')
+            ->get();
         return $restaurants;
     }
 }

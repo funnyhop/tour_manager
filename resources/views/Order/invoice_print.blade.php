@@ -35,7 +35,7 @@
                     <h4 class="text-navy">VNT-00{{ $ord->id }}-0{{ $i + $ord->id }}</h4>
                     <input type="text" name="id" value="VNT-00{{ $ord->id }}-0{{ $i + $ord->id }}"
                         hidden />
-                    <input type="text" name="employee_id" value="{{ $ord->employee_id }}" hidden />
+                    <input type="text" name="employee_id" value="{{ Auth::check() && Auth::user()->id ? Auth::user()->id : '' }}" hidden />
                     <input type="text" name="order_id" value="{{ $ord->id }}" hidden />
                     <span>Đến:</span>
                     <address>

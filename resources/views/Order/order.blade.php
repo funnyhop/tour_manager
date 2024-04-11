@@ -75,7 +75,7 @@
                         <label class="control-label" for="employee_id">Nhân viên</label>
                         <select name="employee_id" id="employee_id" class="form-control">
                             {{-- <option selected disabled>Chọn NV</option> --}}
-                            <option selected value="1">Enabled</option>
+                            <option selected value="{{ Auth::check() && Auth::user()->id ? Auth::user()->id : '' }}">Enabled</option>
                         </select>
                     </div>
                 </div>

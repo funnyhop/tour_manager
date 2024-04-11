@@ -15,7 +15,7 @@
                 <span class="m-r-sm text-muted welcome-message">Chào mừng đến với Viet Nam Tourist</span>
             </li>
             <li>
-                <a href="login.html">
+                <a href="{{ route('logout') }}">
                     <i class="fa fa-sign-out"></i> Đăng xuất
                 </a>
             </li>

@@ -17,30 +17,6 @@
                     </ul>
                     <!-- <a href="#" id="pull">Danh mục</a> -->
                 </nav>
-
-                {{-- <div id="banner-l" class="text-center">
-                    <div class="banner-l-item">
-                        <a href="#"><img src="img/home/banner-l-1.png" alt="" class="img-thumbnail"></a>
-                    </div>
-                    <div class="banner-l-item">
-                        <a href="#"><img src="img/home/banner-l-2.png" alt="" class="img-thumbnail"></a>
-                    </div>
-                    <div class="banner-l-item">
-                        <a href="#"><img src="img/home/banner-l-3.png" alt="" class="img-thumbnail"></a>
-                    </div>
-                    <div class="banner-l-item">
-                        <a href="#"><img src="img/home/banner-l-4.png" alt="" class="img-thumbnail"></a>
-                    </div>
-                    <div class="banner-l-item">
-                        <a href="#"><img src="img/home/banner-l-5.png" alt="" class="img-thumbnail"></a>
-                    </div>
-                    <div class="banner-l-item">
-                        <a href="#"><img src="img/home/banner-l-6.png" alt="" class="img-thumbnail"></a>
-                    </div>
-                    <div class="banner-l-item">
-                        <a href="#"><img src="img/home/banner-l-7.png" alt="" class="img-thumbnail"></a>
-                    </div>
-                </div> --}}
             </div>
             <!--- endsidebar --->
             <div id="main" class="col-md-9">
@@ -59,13 +35,13 @@
                         <!-- The slideshow -->
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img width="848" height="350" src="img/home/slide-1.png" alt="Los Angeles" >
+                                <img width="848" height="350" src="{{ asset('img/home/slide-1.png') }}" alt="Los Angeles" >
                             </div>
                             <div class="carousel-item">
-                                <img width="848" height="350" src="img/home/slide-2.png" alt="Chicago">
+                                <img width="848" height="350" src="{{ asset('img/home/slide-2.png') }}" alt="Chicago">
                             </div>
                             <div class="carousel-item">
-                                <img width="848" height="350" src="img/home/slide-3.png" alt="New York" >
+                                <img width="848" height="350" src="{{ asset('img/home/slide-3.png') }}" alt="New York" >
                             </div>
                         </div>
 

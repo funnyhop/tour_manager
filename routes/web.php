@@ -7,6 +7,7 @@ use App\Http\Controllers\MoveController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\OfficeController;
@@ -30,8 +31,20 @@ use App\Http\Controllers\Employee_PositionController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::middleware(['web','guest'])->group(function () {
+    Route::match(['get', 'post'], 'login', [LoginController::class, 'index'])->name('login');
+});
 
-Route::middleware([])->group(function () {
+
+Route::middleware(['web','auth'])->group(function () {
+
+    Route::get('/hello', [LoginController::class, 'home'])->name('home');
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/profile', [LoginController::class, 'show'])->name('profile');
+    Route::get('profile/{id}', [LoginController::class, 'edit'])->name('profile.edit');
+    Route::match(['put','patch'], 'profile/{id}', [LoginController::class, 'update'])->name('profile.update');
+
+
     Route::get('accommodation', [AccommodationController::class, 'index'])->name('accommodation');
     // Route::get('accommodation/create', [AccommodationController::class, 'create'])->name('accommodation.create');
     Route::post('accommodation',[AccommodationController::class,'store'])->name('accommodation.store');
@@ -65,10 +78,10 @@ Route::middleware([])->group(function () {
 
     Route::get('employee_position', [Employee_PositionController::class, 'index'])->name('employee_position');
     // Route::get('employee_position/create', [Employee_PositionController::class, 'create'])->name('employee_position.create');
-    Route::post('employee_position',[Employee_PositionController::class,'store'])->name('employee_position.store');
-    Route::get('employee_position/{employee_id}/{office_id}', [Employee_PositionController::class, 'edit'])->name('employee_position.edit');
-    Route::match(['put','patch'],'employee_position/{employee_id}/{office_id}', [Employee_PositionController::class, 'update'])->name('employee_position.update');
-    Route::delete('employee_position/{employee_id}/{office_id}',[Employee_PositionController::class, 'destroy'])->name('employee_position.destroy');
+    Route::post('employee_position',[Employee_PositionController::class,'store'])->name('employee_position.store')->middleware('permission.checker:admin');
+    Route::get('employee_position/{employee_id}/{office_id}', [Employee_PositionController::class, 'edit'])->name('employee_position.edit')->middleware('permission.checker:admin');
+    Route::match(['put','patch'],'employee_position/{employee_id}/{office_id}', [Employee_PositionController::class, 'update'])->name('employee_position.update')->middleware('permission.checker:admin');
+    Route::delete('employee_position/{employee_id}/{office_id}',[Employee_PositionController::class, 'destroy'])->name('employee_position.destroy')->middleware('permission.checker:admin');
 
     Route::get('employee', [EmployeeController::class, 'index'])->name('employee');
     // Route::get('employee/create', [EmployeeController::class, 'create'])->name('employee.create');
@@ -105,10 +118,10 @@ Route::middleware([])->group(function () {
 
     Route::get('office', [OfficeController::class, 'index'])->name('office');
     // Route::get('office/create', [OfficeController::class, 'create'])->name('office.create');
-    Route::post('office',[OfficeController::class,'store'])->name('office.store');
-    Route::get('office/{id}', [OfficeController::class, 'edit'])->name('office.edit');
-    Route::match(['put','patch'],'office/{id}', [OfficeController::class, 'update'])->name('office.update');
-    Route::delete('office/{id}',[OfficeController::class, 'destroy'])->name('office.destroy');
+    Route::post('office',[OfficeController::class,'store'])->name('office.store')->middleware('permission.checker:admin');
+    Route::get('office/{id}', [OfficeController::class, 'edit'])->name('office.edit')->middleware('permission.checker:admin');
+    Route::match(['put','patch'],'office/{id}', [OfficeController::class, 'update'])->name('office.update')->middleware('permission.checker:admin');
+    Route::delete('office/{id}',[OfficeController::class, 'destroy'])->name('office.destroy')->middleware('permission.checker:admin');
 
     Route::get('opject', [OpjectController::class, 'index'])->name('opject');
     // Route::get('opject/create', [OpjectController::class, 'create'])->name('opject.create');
@@ -142,10 +155,10 @@ Route::middleware([])->group(function () {
 
     Route::get('unit', [UnitController::class, 'index'])->name('unit');
     // Route::get('unit/create', [UnitController::class, 'create'])->name('unit.create');
-    Route::post('unit',[UnitController::class,'store'])->name('unit.store');
-    Route::get('unit/{id}', [UnitController::class, 'edit'])->name('unit.edit');
-    Route::match(['put','patch'],'unit/{id}', [UnitController::class, 'update'])->name('unit.update');
-    Route::delete('unit/{id}',[UnitController::class, 'destroy'])->name('unit.destroy');
+    Route::post('unit',[UnitController::class,'store'])->name('unit.store')->middleware('permission.checker:admin');
+    Route::get('unit/{id}', [UnitController::class, 'edit'])->name('unit.edit')->middleware('permission.checker:admin');
+    Route::match(['put','patch'],'unit/{id}', [UnitController::class, 'update'])->name('unit.update')->middleware('permission.checker:admin');
+    Route::delete('unit/{id}',[UnitController::class, 'destroy'])->name('unit.destroy')->middleware('permission.checker:admin');
 
     Route::get('vehicle', [VehicleController::class, 'index'])->name('vehicle');
     // Route::get('vehicle/create', [VehicleController::class, 'create'])->name('vehicle.create');
@@ -160,11 +173,13 @@ Route::middleware([])->group(function () {
 
 
 
+// Route::get('login', function () {
+//     return view('login');
+// });
 
-
-Route::get('/', function () {
-    return view('frontend.home');
-});
+// Route::get('/', function () {
+//     return view('frontend.home');
+// });
 Route::get('/search', function () {
     return view('frontend.search');
 });

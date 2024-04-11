@@ -17,11 +17,10 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $table='employees';
+    protected $primaryKey = 'id';
+    protected $fillable = ['id', 'name', 'phone', 'gender', 'address', 'birthday', 'email', 'password', 'unit_id','role'];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,4 +41,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function getStrRole(){
+        $permissionMapping = array_flip(config('permisstion'));
+        return $permissionMapping[$this->role];
+     }
 }

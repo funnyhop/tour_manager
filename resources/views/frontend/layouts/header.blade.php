@@ -4,7 +4,7 @@
         <div class="row">
             <div id="logo" class="col-md-3 col-sm-12 col-xs-12">
                 <h1>
-                    <a href="#"><img src="img/home/logo.png"
+                    <a href="#"><img src="{{ asset('img/home/logo.png') }}"
                             style="width: 178px;
                         height: 68px;"></a>
                     <nav><a id="pull" class="btn" href="#">

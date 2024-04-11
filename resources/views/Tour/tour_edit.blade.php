@@ -36,7 +36,7 @@
 
 
         <div class="ibox-content m-b-sm border-bottom">
-            <form action="{{ route('tour.update', ['id' => $tour->id]) }}" method="POST">
+            <form action="{{ route('tour.update', ['id' => $tour->id]) }}" method="POST" >
                 @csrf
                 @method('PUT')
                 <div class="row">
@@ -161,6 +161,7 @@
                                 @endif
                             </div>
                             <label for="newimg">Hãy chọn một ảnh mới.</label>
+                            <input type="text" value="{{ $tour->image }}" name="img" hidden>
                             <div id="newimg">
                                 <div class="btn-group">
                                     <label title="Upload image image" for="inputImage" class="btn btn-primary">
@@ -184,4 +185,18 @@
         </div>
 
     </div>
+@endsection
+@section('scripts')
+<script>
+    function updateImgInput(input) {
+        var imgInput = document.getElementById('img');
+        if (input.files && input.files[0]) {
+            // Nếu người dùng chọn tệp tin, cập nhật giá trị của trường img
+            imgInput.value = '';
+        } else {
+            // Nếu người dùng không chọn tệp tin mới, giữ nguyên giá trị của trường img
+            imgInput.value = "{{ $tour->image }}";
+        }
+    }
+</script>
 @endsection

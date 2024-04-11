@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row">
                 <div id="logo-f" class="col-md-3 col-sm-12 col-xs-12 text-center">
-                    <a href="#"><img src="img/home/logo.png" style="width: 241px"></a>
+                    <a href="#"><img src="{{ asset('img/home/logo.png') }}" style="width: 241px"></a>
                 </div>
                 <div id="about" class="col-md-3 col-sm-12 col-xs-12">
                     <h3>About us</h3>
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div id="scroll">
-                <a href="#"><img src="img/home/scroll.png"></a>
+                <a href="#"><img src="{{ asset('img/home/scroll.png') }}"></a>
             </div>
         </div>
     </div>

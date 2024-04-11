@@ -142,9 +142,22 @@ class TourController extends Controller
                 'start_time' => $start_time,
                 'end_time' => $end_time,
                 'price' => $request->input('price'),
-                'image' => $request->input('image'),
+                // 'image' => $request->input('image'),
                 'outstanding' => $request->input('outstanding'),
             ]);
+            // dd($request->input('image'),$request->input('img'));
+            if ((string)$request->input('image')==null) {
+                $tour = DB::table('tours')->where('id', $id)
+                ->update([
+                    'image' => $request->input('img')
+                ]);
+            } else {
+                $tour = DB::table('tours')->where('id', $id)
+                ->update([
+                    'image' => $request->input('image')
+                ]);
+            }
+
         return redirect()->route('tour');
     }
 

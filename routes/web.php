@@ -15,6 +15,7 @@ use App\Http\Controllers\OpjectController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\RestaurantController;
@@ -33,6 +34,8 @@ use App\Http\Controllers\Employee_PositionController;
 */
 Route::middleware(['web','guest'])->group(function () {
     Route::match(['get', 'post'], 'login', [LoginController::class, 'index'])->name('login');
+    Route::get('/', [FrontendController::class, 'index'])->name('/');
+    Route::get('detail/{id}', [FrontendController::class, 'show'])->name('detail');
 });
 
 

@@ -57,7 +57,7 @@
                 <!-- end main -->
             </div>
         <!--- content --->
-        @yield( 'content' )
+        {{-- @yield( 'content' ) --}}
         <!--- endcontent --->
         </div>
     </div>

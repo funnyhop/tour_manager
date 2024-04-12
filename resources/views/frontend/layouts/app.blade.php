@@ -41,7 +41,7 @@
 			<div class="row">
                 @include('frontend.layouts.header')
                 @include('frontend.layouts.sidebar')
-                {{-- @yield('content') --}}
+                @yield('content')
                 @include('frontend.layouts.footer')
 			</div>
 		</div>

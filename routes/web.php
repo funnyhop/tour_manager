@@ -36,6 +36,9 @@ Route::middleware(['web','guest'])->group(function () {
     Route::match(['get', 'post'], 'login', [LoginController::class, 'index'])->name('login');
     Route::get('/', [FrontendController::class, 'index'])->name('/');
     Route::get('detail/{id}', [FrontendController::class, 'show'])->name('detail');
+    Route::get('add_cart/{id}', [FrontendController::class, 'create'])->name('add_cart');
+    Route::post('add_cart',[FrontendController::class,'store'])->name('add_cart.store');
+
 });
 
 

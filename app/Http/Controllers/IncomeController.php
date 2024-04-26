@@ -92,7 +92,7 @@ class IncomeController extends Controller
          'cus_news_month','paid_order', 'order_total_month', 'canceled_order',
           'pending_order', 'lastMonthIncome', 'cus_last_month', 'order_quantity_yesterday'));
     }
-
+    // composer require nesbot/carbon
     public function dashboard_filter(Request $request)
     {
         $data = $request->all();

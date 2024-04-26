@@ -6,7 +6,9 @@ use App\Models\Eat;
 use App\Models\Move;
 use App\Models\Tour;
 use App\Models\Hotel;
+use App\Models\Order;
 use App\Models\Vehicle;
+use App\Models\Customer;
 use App\Models\Location;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
@@ -40,18 +42,49 @@ class FrontendController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $id)
     {
-        //
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $now = date("Y-m-d");
+        $tour = DB::table('tours')->select('id', 'name' , 'description', 'start_time', 'end_time', 'start_date', 'end_date','image', 'outstanding', 'price')
+        ->where('id', $id)
+        ->first();
+        return view('frontend.cart', [
+            'tour'=>$tour,
+            'now' => $now
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
-        //
+        // Tạo một khách hàng mới và lưu vào cơ sở dữ liệu
+        $customer = Customer::create([
+            'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
+            'address' => $request->input('address'),
+            'email' => $request->input('email'),
+        ]);
+
+        // Lấy ID của khách hàng vừa tạo
+        $customerId = $customer->id;
+
+        // Tạo một đơn hàng mới và lưu vào cơ sở dữ liệu
+        $order = Order::create([
+            'tour_id' => $request->input('tour_id'),
+            'customer_id' => $customerId,
+            'quantity' => $request->input('quantity'),
+            'status' => $request->input('status'),
+            'employee_id' => $request->input('employee_id'),
+            'order_date' => $request->input('order_date'),
+        ]);
+
+        return view('frontend.complete');
     }
+
 
     /**
      * Display the specified resource.
@@ -77,6 +110,7 @@ class FrontendController extends Controller
             'restaurants' => $restaurants,
         ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.

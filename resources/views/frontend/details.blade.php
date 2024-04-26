@@ -174,8 +174,8 @@
                                 @endforeach
                                 <div>
                                     <div class="btn-group">
-                                        <button class="btn btn-primary btn-sm"><i class="fa fa-cart-plus"></i> Add to
-                                            cart</button>
+                                        <a href="{{ route('add_cart', ['id' => $tour->id]) }}" class="btn btn-info btn-sm"><i class="fa fa-cart-plus"></i> Add to
+                                            cart</a>
                                     </div>
                                 </div>
                             </div>

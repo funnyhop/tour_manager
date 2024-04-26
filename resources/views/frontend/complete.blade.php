@@ -15,6 +15,6 @@
         <p>• Trụ sở chính: 132 3/2, Phường Hưng Lợi, Quận Ninh Kiều TP Cần Thơ</p>
         <p>Cám ơn Quý khách đã sử dụng Sản phẩm của Công ty chúng Tôi!</p>
     </div>
-    <p class="text-right return"><a href="#">Quay lại trang chủ</a></p>
+    <p class="text-right return"><a href="{{ route('/') }}">Quay lại trang chủ</a></p>
 </div>
 @endsection

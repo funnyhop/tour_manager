@@ -13,25 +13,7 @@
 
 	{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-	<script type="text/javascript">
-		$(function() {
-			var pull        = $('#pull');
-			menu        = $('nav ul');
-			menuHeight  = menu.height();
 
-			$(pull).on('click', function(e) {
-				e.preventDefault();
-				menu.slideToggle();
-			});
-		});
-
-		$(window).resize(function(){
-			var w = $(window).width();
-			if(w > 320 && menu.is(':hidden')) {
-				menu.removeAttr('style');
-			}
-		});
-	</script>
 </head>
 <body>
 
@@ -54,5 +36,25 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+		$(function() {
+			var pull        = $('#pull');
+			menu        = $('nav ul');
+			menuHeight  = menu.height();
+
+			$(pull).on('click', function(e) {
+				e.preventDefault();
+				menu.slideToggle();
+			});
+		});
+
+		$(window).resize(function(){
+			var w = $(window).width();
+			if(w > 320 && menu.is(':hidden')) {
+				menu.removeAttr('style');
+			}
+		});
+	</script>
+    @yield('script')
 </body>
 </html>

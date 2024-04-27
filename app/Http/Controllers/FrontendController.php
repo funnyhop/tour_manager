@@ -111,6 +111,18 @@ class FrontendController extends Controller
         ]);
     }
 
+    public function searchItem_dm(Request $request)
+    {
+        $key = $request->search_key;
+        $list = Tour::search($key);
+        return view('frontend.search', compact('list', 'key'));
+    }
+    public function searchItem(Request $request)
+    {
+        $key = $request->key;
+        $list = Tour::search($key);
+        return view('frontend.search', compact('list', 'key'));
+    }
 
     /**
      * Show the form for editing the specified resource.

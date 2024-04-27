@@ -21,4 +21,15 @@ class Tour extends Model
             ->get();
         return $tours;
     }
+    public static function search($key)
+    {
+        if ($key) {
+            return static::where('name', 'like', '%' . $key . '%')
+                ->orWhere('description', 'like', '%' . $key . '%')
+                ->orWhere('price', 'like', '%' . $key . '%')
+                ->get();
+        }
+        return [];
+    }
+
 }

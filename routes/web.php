@@ -38,6 +38,8 @@ Route::middleware(['web','guest'])->group(function () {
     Route::get('detail/{id}', [FrontendController::class, 'show'])->name('detail');
     Route::get('add_cart/{id}', [FrontendController::class, 'create'])->name('add_cart');
     Route::post('add_cart',[FrontendController::class,'store'])->name('add_cart.store');
+    Route::get('search_item', [FrontendController::class, 'searchItem'])->name('search_item');
+    Route::get('search_item_dm', [FrontendController::class, 'searchItem_dm'])->name('search_item_dm');
 
 });
 
@@ -186,28 +188,28 @@ Route::middleware(['web','auth'])->group(function () {
 // Route::get('/', function () {
 //     return view('frontend.home');
 // });
-Route::get('/search', function () {
-    return view('frontend.search');
-});
-Route::get('/cart', function () {
-    return view('frontend.cart');
-});
-Route::get('/category', function () {
-    return view('frontend.category');
-});
-Route::get('/complete', function () {
-    return view('frontend.complete');
-});
-Route::get('/details', function () {
-    return view('frontend.details');
-});
-Route::get('/email', function () {
-    return view('frontend.email');
-});
+// Route::get('/search', function () {
+//     return view('frontend.search');
+// });
+// Route::get('/cart', function () {
+//     return view('frontend.cart');
+// });
+// Route::get('/category', function () {
+//     return view('frontend.category');
+// });
+// Route::get('/complete', function () {
+//     return view('frontend.complete');
+// });
+// Route::get('/details', function () {
+//     return view('frontend.details');
+// });
+// Route::get('/email', function () {
+//     return view('frontend.email');
+// });
 
-Route::get('/bill_detail', function () {
-    return view('Order.bill_detail');
-});
+// Route::get('/bill_detail', function () {
+//     return view('Order.bill_detail');
+// });
 
 // Route::get('/income', function () {
 //     return view('index');
